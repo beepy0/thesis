@@ -1,24 +1,40 @@
 #include <iostream>
 #include <cstdlib>
+#include <chrono>  // for high_resolution_clock
+#include <vector>
+#include <algorithm>
+#include <random>
 
 using namespace std;
 
 void calculateSum();
 
 int main() {
-    cout << "Starting a massive loop that sums numbers:" << endl;
+    cout << "Starting a massive loop that multiplies two vectors:" << endl;
     calculateSum();
 
     return 0;
 }
 
 void calculateSum() {
-    srand(1);
-    double sum = 0;
-    int valuesArray[10] = {5, 214, 35666, 14215215, 22, 124541, 1, 34, 5, 4848};
-    for (int i=0; i<1000000000;i++) {
-        sum += valuesArray[rand() % 10];
-        sum /= valuesArray[rand() % 10];
+    string str = "100";
+    std::seed_seq staticSeed(str.begin(), str.end());
+    std::default_random_engine generator(staticSeed);
+    std::uniform_int_distribution<int> distribution(1,1000);
+
+    vector<int> firstVector(4, distribution(generator));
+    vector<int> secondVector(4, distribution(generator));
+    vector<int> outputVector(4, 0);
+
+    auto start = std::chrono::high_resolution_clock::now();
+    for (long int i=0; i<5000000000; i++) {
+        std::transform( firstVector.begin(), firstVector.end(),
+                        secondVector.begin(), outputVector.begin(),
+                        std::multiplies<>());
     }
-    cout << "The resulted sum is: " << sum << endl;
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - start;
+    std::cout << "Elapsed time: " << elapsed.count() << " seconds." << endl;
 }
+
+
