@@ -3,6 +3,6 @@ project(hello_world)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fopenmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fopenmp -O2")
 
-add_executable(hello_world main.cpp)
+add_executable(hello_world main.cpp PrintStuff.cpp PrintStuff.h Testcase.cpp Testcase.h)
