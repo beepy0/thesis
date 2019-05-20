@@ -10,8 +10,8 @@
 #include <stdlib.h>
 
 #include <fstream>
-#include <vector>  // std::vector
-#include <string>  // std:: stold
+#include <vector>
+#include <string>
 
 using namespace std;
 
@@ -24,19 +24,19 @@ unsigned int Random_Generate()
     return x ^ ((h & 1) << 31);
 }
 
-void loadData(int arr[]) {
+void loadData(int dataArray[]) {
     int i = 0;
 
-    std::ifstream ifs ("/home/meggamorty/CLionProjects/optimization/data/zipf_stream_data_small.csv");
+    std::ifstream fileStream ("/home/meggamorty/CLionProjects/thesis/optimization/data/zipf_stream_data_small.csv");
 
-    if(ifs.is_open())
+    if(fileStream.is_open())
     {
         std::string line;
-        while(std::getline(ifs, line, '\n'))
-        {
-            arr[i] = std::stoi(line);
+        while(std::getline(fileStream, line, '\n')) {
+            dataArray[i] = std::stoi(line);
             i++;
         }
+        fileStream.close();
     }
 }
 
@@ -48,25 +48,6 @@ int main() {
     for(int i = 0; i < 10; i++) {
         cout << data[i] << " ";
     }
-
-//    int i, j;
-//    int array[10] = {0};
-//
-//    FILE *file = fopen("/home/meggamorty/CLionProjects/optimization/data/zipf_stream_data_small.csv", "r");
-//
-//    for(i = 0; i < 10; i++)
-//    {
-//        fscanf(file, "%d,", &array[i]);
-//    }
-//
-//    for(i = 0; i < 10; i++) {
-//        cout << array[i] << " ";
-//    }
-
-//
-//    for(i = 0; i < 10; i++) {
-//        cout << array[i] << " ";
-//    }
 
 //    //generate the pseudo-random numbers for AGMS sketches; use EH3
 //    Xi **agms_eh3 = new Xi*[buckets_no * rows_no];
