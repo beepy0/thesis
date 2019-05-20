@@ -1,0 +1,3 @@
+/home/meggamorty/CLionProjects/thesis/optimization/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/meggamorty/CLionProjects/thesis/optimization/cmake-build-debug/CMakeFiles/optimization.dir
+/home/meggamorty/CLionProjects/thesis/optimization/cmake-build-debug/CMakeFiles/edit_cache.dir
