@@ -12,9 +12,7 @@ The seeds of each pseudo-random variable are generated randomly from a pair of m
 */
 
 
-Xi::~Xi()
-{
-}
+Xi::~Xi() = default;
 
 
 
@@ -32,9 +30,7 @@ Xi_BCH3::Xi_BCH3(unsigned int I1, unsigned int I2)
 }
 
 
-Xi_BCH3::~Xi_BCH3()
-{
-}
+Xi_BCH3::~Xi_BCH3() = default;
 
 
 double Xi_BCH3::element(unsigned int j)
@@ -63,7 +59,7 @@ Xi_EH3::Xi_EH3(unsigned int I1, unsigned int I2)
 {
   const unsigned int k_mask = 0xffffffff;
 
-  seeds[0] = ((I1 << 16)^(I2 & 0177777)) & 1UL;
+  seeds[0] = ((I1 << 16)^(I2 & 0177777)) & 1U;
 
   I1 = 36969*(I1 & 0177777) + (I1>>16);
   I2 = 18000*(I2 & 0177777) + (I2>>16);
@@ -72,9 +68,7 @@ Xi_EH3::Xi_EH3(unsigned int I1, unsigned int I2)
 }
 
 
-Xi_EH3::~Xi_EH3()
-{
-}
+Xi_EH3::~Xi_EH3() = default;
 
 
 double Xi_EH3::element(unsigned int j)
@@ -112,9 +106,7 @@ Xi_CW2::Xi_CW2(unsigned int I1, unsigned int I2)
 }
 
 
-Xi_CW2::~Xi_CW2()
-{
-}
+Xi_CW2::~Xi_CW2() = default;
 
 
 double Xi_CW2::element(unsigned int j)
@@ -158,9 +150,7 @@ Xi_CW2B::Xi_CW2B(unsigned int I1, unsigned int I2, unsigned int B)
 }
 
 
-Xi_CW2B::~Xi_CW2B()
-{
-}
+Xi_CW2B::~Xi_CW2B() = default;
 
 
 double Xi_CW2B::element(unsigned int j)
@@ -200,9 +190,7 @@ Xi_BCH5::Xi_BCH5(unsigned int I1, unsigned int I2)
 }
 
 
-Xi_BCH5::~Xi_BCH5()
-{
-}
+Xi_BCH5::~Xi_BCH5() = default;
 
 
 double Xi_BCH5::element(unsigned int j)
@@ -247,9 +235,7 @@ Xi_RM7::Xi_RM7(unsigned int I1, unsigned int I2)
 }
 
 
-Xi_RM7::~Xi_RM7()
-{
-}
+Xi_RM7::~Xi_RM7() = default;
 
 
 double Xi_RM7::element(unsigned int j)
@@ -301,9 +287,7 @@ Xi_CW4::Xi_CW4(unsigned int I1, unsigned int I2)
 }
 
 
-Xi_CW4::~Xi_CW4()
-{
-}
+Xi_CW4::~Xi_CW4() = default;
 
 
 double Xi_CW4::element(unsigned int j)
@@ -361,9 +345,7 @@ Xi_CW4B::Xi_CW4B(unsigned int I1, unsigned int I2, unsigned int B)
 }
 
 
-Xi_CW4B::~Xi_CW4B()
-{
-}
+Xi_CW4B::~Xi_CW4B() = default;
 
 
 double Xi_CW4B::element(unsigned int j)
@@ -401,9 +383,7 @@ Xi_Dyadic_Map_EH3::Xi_Dyadic_Map_EH3(unsigned int Dom_size, unsigned int I1, uns
 }
 
 
-Xi_Dyadic_Map_EH3::~Xi_Dyadic_Map_EH3()
-{
-}
+Xi_Dyadic_Map_EH3::~Xi_Dyadic_Map_EH3() = default;
 
 
 double Xi_Dyadic_Map_EH3::element(unsigned int j)
@@ -464,9 +444,7 @@ Xi_Dyadic_Map_BCH5::Xi_Dyadic_Map_BCH5(unsigned int Dom_size, unsigned int I1, u
 }
 
 
-Xi_Dyadic_Map_BCH5::~Xi_Dyadic_Map_BCH5()
-{
-}
+Xi_Dyadic_Map_BCH5::~Xi_Dyadic_Map_BCH5() = default;
 
 
 double Xi_Dyadic_Map_BCH5::element(unsigned int j)

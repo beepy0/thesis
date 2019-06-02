@@ -13,7 +13,7 @@ Relation::Relation(unsigned int dom_size, unsigned int tuples_no)
   this->dom_size = dom_size;
 
   this->tuples_no = tuples_no;
-  tuples = NULL;
+  tuples = nullptr;
 }
 
 
@@ -23,7 +23,7 @@ Relation::~Relation()
   tuples_no = 0;
 
   delete tuples;
-  tuples = NULL;
+  tuples = nullptr;
 }
 
 

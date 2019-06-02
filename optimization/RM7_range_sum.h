@@ -749,13 +749,13 @@ int Base_Expression(XOR_AND_Expression *expr, Data_Structure *data)
     data->t = new Matrix;
     data->t->r = 0;
     data->t->c = n;
-    data->t->elem = NULL;
+    data->t->elem = nullptr;
 
     data->c = new Vector;
     data->c->n = 0;
-    data->c->elem = NULL;
+    data->c->elem = nullptr;
 
-    data->beta_form = NULL;
+    data->beta_form = nullptr;
 
     return 0;
   }

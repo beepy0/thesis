@@ -21,8 +21,8 @@ using namespace std;
 unsigned int Random_Generate(unsigned int seed)
 {
     srand(seed);
-    unsigned int x = rand();
-    unsigned int h = rand();
+    auto x = (unsigned int)rand();
+    auto h = (unsigned int)rand();
 
     return x ^ ((h & 1) << 31);
 }
@@ -47,7 +47,8 @@ void loadData(unsigned int dataArray[]) {
 void timeAgmsUpdate(Sketch *agms1,unsigned int data[],
                     const int tuples_no,const string &sketch_type)
 {
-    cout << "updating " << sketch_type << " sketch with stream data..." << endl;
+    cout << endl << "updating " << sketch_type <<
+        " sketch with stream data..." << endl;
     //update the sketches for relation
     auto start_agms = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < tuples_no; i++)
