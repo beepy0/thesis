@@ -96,17 +96,36 @@ void printFrequencies(const unsigned int freq_vector[], const int tuples_no)
     cout << endl;
 }
 
+long long computeManualSelfJoinSize(const unsigned int freq_vector[],
+                              const int tuples_no)
+{
+    long long tmp = 0;
+    long long self_join_size = 0;
+    for(int i = 0; i < tuples_no; i++)
+    {
+        tmp = freq_vector[i];
+        self_join_size += (tmp * tmp);
+    }
+    return self_join_size;
+}
+
 int main() {
     unsigned int i;
-    const unsigned int buckets_no = 20;
-    const unsigned int rows_no = 20;
+    const unsigned int buckets_no = 150;
+    const unsigned int rows_no = 150;
     const int tuples_no = 100000;
     unsigned int data[tuples_no] = {0};
     loadData(data);
+//    cout << data[3] << endl;
     sort(data, data + tuples_no);
 
     unsigned int freq_vector[tuples_no] = {0};
     computeManualFrequencyVector(data, freq_vector, tuples_no);
+    printFrequencies(freq_vector, tuples_no);
+    long long manual_join_size = computeManualSelfJoinSize(freq_vector,
+            tuples_no);
+    cout << "Manual join size computation is: "
+         << manual_join_size << endl;
 
     unsigned int I1, I2;
     //generate the pseudo-random numbers for AGMS sketches; use EH3
