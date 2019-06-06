@@ -9,6 +9,8 @@
 /home/meggamorty/CLionProjects/thesis/optimization/main.cpp
 iostream
 -
+algorithm
+-
 relation.h
 /home/meggamorty/CLionProjects/thesis/optimization/relation.h
 xis.h

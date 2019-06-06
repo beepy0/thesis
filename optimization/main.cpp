@@ -1,19 +1,20 @@
 #include <iostream>
+#include <algorithm> // for sorting
 #include "relation.h"
 #include "xis.h"
-#include "sketches.h"
 
+#include "sketches.h"
 #include <sys/time.h>
 #include <time.h>
 #include <stdio.h>
-#include <stdlib.h>
 
+#include <stdlib.h>
 #include <fstream>
 #include <vector>
+
 #include <string>
 
 #include <chrono>  // for high_resolution_clock
-
 
 using namespace std;
 
@@ -44,8 +45,8 @@ void loadData(unsigned int dataArray[]) {
     }
 }
 
-void timeAgmsUpdate(Sketch *agms1,unsigned int data[],
-                    const int tuples_no,const string &sketch_type)
+void timeSketchUpdate(Sketch *agms1, unsigned int data[],
+                    const int tuples_no, const string &sketch_type)
 {
     cout << endl << "updating " << sketch_type <<
         " sketch with stream data..." << endl;
@@ -63,6 +64,38 @@ void timeAgmsUpdate(Sketch *agms1,unsigned int data[],
                                              final_time_agms);
 }
 
+void computeManualFrequencyVector(const unsigned int data[],
+                          unsigned int freq_vector[],
+                          const int tuples_no)
+{
+    unsigned int current_value = 0;
+    int freq_vector_index = 0;
+    for(int i = 0; i < tuples_no; i++)
+    {
+        if(data[i] == current_value)
+        {
+            freq_vector[freq_vector_index] += 1;
+        } else
+            {
+                freq_vector_index++;
+                current_value = data[i];
+                freq_vector[freq_vector_index] += 1;
+            }
+    }
+}
+
+void printFrequencies(const unsigned int freq_vector[], const int tuples_no)
+{
+    for(int i = 0; i < tuples_no; i++)
+    {
+        if(freq_vector[i] != 0)
+        {
+            cout << freq_vector[i] << ' ';
+        }
+    }
+    cout << endl;
+}
+
 int main() {
     unsigned int i;
     const unsigned int buckets_no = 20;
@@ -70,7 +103,10 @@ int main() {
     const int tuples_no = 100000;
     unsigned int data[tuples_no] = {0};
     loadData(data);
+    sort(data, data + tuples_no);
 
+    unsigned int freq_vector[tuples_no] = {0};
+    computeManualFrequencyVector(data, freq_vector, tuples_no);
 
     unsigned int I1, I2;
     //generate the pseudo-random numbers for AGMS sketches; use EH3
@@ -101,8 +137,8 @@ int main() {
     Sketch *fagms1 = new FAGMS_Sketch(buckets_no, rows_no,
                                       fagms_cw2b, fagms_eh3);
 
-    timeAgmsUpdate(agms1, data, tuples_no, "AGMS");
-    timeAgmsUpdate(fagms1, data, tuples_no, "Fast-AGMS");
+    timeSketchUpdate(agms1, data, tuples_no, "AGMS");
+    timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
 
 
     //compute the sketch estimate
