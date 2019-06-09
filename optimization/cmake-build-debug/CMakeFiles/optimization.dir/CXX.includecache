@@ -6,39 +6,27 @@
 
 #IncludeRegexTransform: 
 
-/home/meggamorty/CLionProjects/thesis/optimization/main.cpp
-iostream
+/home/meggamorty/CLionProjects/thesis/optimization/RM7_range_sum.h
+stdio.h
 -
-algorithm
--
-relation.h
-/home/meggamorty/CLionProjects/thesis/optimization/relation.h
-xis.h
-/home/meggamorty/CLionProjects/thesis/optimization/xis.h
-sketches.h
-/home/meggamorty/CLionProjects/thesis/optimization/sketches.h
-sys/time.h
--
-time.h
--
+
+/home/meggamorty/CLionProjects/thesis/optimization/gen_scheme.h
 stdio.h
 -
 stdlib.h
 -
-fstream
--
-vector
--
-string
--
-chrono
--
 
-/home/meggamorty/CLionProjects/thesis/optimization/relation.h
-vector
--
+/home/meggamorty/CLionProjects/thesis/optimization/range_sum.h
+gen_scheme.h
+/home/meggamorty/CLionProjects/thesis/optimization/gen_scheme.h
 
-/home/meggamorty/CLionProjects/thesis/optimization/sketches.h
+/home/meggamorty/CLionProjects/thesis/optimization/xis.cpp
+gen_scheme.h
+/home/meggamorty/CLionProjects/thesis/optimization/gen_scheme.h
+range_sum.h
+/home/meggamorty/CLionProjects/thesis/optimization/range_sum.h
+RM7_range_sum.h
+/home/meggamorty/CLionProjects/thesis/optimization/RM7_range_sum.h
 xis.h
 /home/meggamorty/CLionProjects/thesis/optimization/xis.h
 

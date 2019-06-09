@@ -32,7 +32,7 @@ void loadData(unsigned int dataArray[]) {
   int i = 0;
 
   std::ifstream fileStream ("/home/meggamorty/CLionProjects/thesis/"
-                            "optimization/data/zipf_stream_data_100.csv");
+                            "optimization/data/zipf_stream_data_100k.csv");
 
   if(fileStream.is_open())
   {
@@ -115,11 +115,39 @@ long long computeManualSelfJoinSize(const unsigned int freq_vector[],
   return self_join_size;
 }
 
+
+//void get_key_bits(unsigned int key, unsigned *bits)
+//{
+//  unsigned
+//      n_bits = 32u,
+//      bit = 0;
+//
+//  for(bit = 0; bit < n_bits; ++bit)
+//    bits[n_bits - 1 - bit] = (key >> bit) & 1;
+//
+//}
+
+
 int main() {
+
+//  const unsigned int key = 0xfffffff0;
+//  unsigned int key = 0b011101u;
+//  unsigned int no_bits = 32u;
+//  auto *key_bits = (unsigned*)malloc(sizeof(unsigned) * no_bits);
+//  get_key_bits(key, key_bits);
+//
+//
+//  cout << endl;
+//  for(unsigned int bit = 0; bit < no_bits; bit++)
+//    printf("%u", key_bits[bit]);
+//  printf("\n");
+
+
+
   unsigned int i;
   const unsigned int buckets_no = 150;
   const unsigned int rows_no = 150;
-  const int tuples_no = 100;
+  const int tuples_no = 100000;
   unsigned int data[tuples_no] = {0};
   loadData(data);
   sort(data, data + tuples_no);
@@ -150,9 +178,10 @@ int main() {
     I2 = Random_Generate(7);
     fagms_eh3[i] = new Xi_EH3(I1, I2);
 
-    I1 = Random_Generate(5);
-    I2 = Random_Generate(7);
-    fagms_cw2b[i] = new Xi_CW2B(I1, I2, buckets_no);
+//    I1 = Random_Generate(5);
+//    I2 = Random_Generate(7);
+//    fagms_cw2b[i] = new Xi_CW2B(I1, I2, buckets_no);
+    fagms_cw2b[i] = new Xi_H3(1333337u, buckets_no);
   }
 
   //build the sketches for each of the two relations

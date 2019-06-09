@@ -82,7 +82,7 @@ class Xi_H3 : public  Xi
     unsigned int seed_val;
 
   public:
-    Xi_H3(unsigned int buckets_no, unsigned int seed_val);
+    Xi_H3(unsigned int seed_val, unsigned int buckets_no);
     virtual ~Xi_H3();
 
     virtual double element(unsigned int key);

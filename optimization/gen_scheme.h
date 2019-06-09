@@ -52,6 +52,22 @@ inline unsigned int hash31(unsigned long long a, unsigned long long b, unsigned 
 
 
 
+/*
+ * Fill an array with the bit representation for the key
+ * Order of bits in the array is: LSB to the most right
+ */
+inline void get_key_bits(unsigned int key, unsigned *bits)
+{
+  unsigned
+      n_bits = 32u,
+      bit = 0;
+
+  for(bit = 0; bit < n_bits; ++bit)
+    bits[n_bits - 1 - bit] = (key >> bit) & 1;
+}
+
+
+
 
 /*
   +-1 random variables
@@ -155,19 +171,41 @@ inline unsigned int CW4B(unsigned long a, unsigned long b, unsigned long c, unsi
 }
 
 
+
+
 inline unsigned int H3(unsigned int key,
-                       unsigned int buckets_no,
-                       unsigned int seeds_val)
+                       unsigned int seed_val,
+                       unsigned int buckets_no)
 {
+  const unsigned int no_bits = 32u;
   unsigned int offset = 0;
-  unsigned int q_matrix[32] = {0};
+  unsigned int q_matrix[no_bits] = {0};
   for ( auto &row : q_matrix )
   {
-    row = seeds_val + offset;
+    row = seed_val + offset;
     offset += 500;
   }
 
+  auto *key_bits = (unsigned*)malloc(sizeof(unsigned) * no_bits);
+  get_key_bits(key, key_bits);
 
+  for(unsigned int i = 0; i < no_bits; i++)
+  {
+    if(key_bits[i] == 1u)
+      continue;
+    else
+      q_matrix[i] = 0u;
+  }
+
+  unsigned int res = 0u;
+  for ( auto &row : q_matrix)
+  {
+    res ^= row;
+  }
+
+  free(key_bits);
+
+  return res % buckets_no;
 }
 
 #endif
