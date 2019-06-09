@@ -84,9 +84,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/meggamorty/CLionProjects/thesis/optimization/RM7_range_sum.h">
-			<Option target="optimization"/>
-		</Unit>
 		<Unit filename="/home/meggamorty/CLionProjects/thesis/optimization/data_generator.h">
 			<Option target="optimization"/>
 		</Unit>

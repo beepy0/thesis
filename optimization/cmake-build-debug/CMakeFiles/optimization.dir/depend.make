@@ -14,7 +14,6 @@ CMakeFiles/optimization.dir/sketches.cpp.o: ../sketches.cpp
 CMakeFiles/optimization.dir/sketches.cpp.o: ../sketches.h
 CMakeFiles/optimization.dir/sketches.cpp.o: ../xis.h
 
-CMakeFiles/optimization.dir/xis.cpp.o: ../RM7_range_sum.h
 CMakeFiles/optimization.dir/xis.cpp.o: ../gen_scheme.h
 CMakeFiles/optimization.dir/xis.cpp.o: ../range_sum.h
 CMakeFiles/optimization.dir/xis.cpp.o: ../xis.cpp

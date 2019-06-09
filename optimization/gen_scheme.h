@@ -172,6 +172,7 @@ inline unsigned int H3(unsigned int key,
     }
   }
 
+
   return res % buckets_no;
 }
 

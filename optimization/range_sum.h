@@ -24,7 +24,7 @@ inline double BCH3Interval(unsigned int gamma, unsigned int S0, unsigned int s0)
  int i;
  double sum = 0;
 
- if (gamma & 1U == 1U)
+ if ((gamma & 1U) == 1U)
  {
    gamma -= 1;
    sum += BCH3(s0, S0, gamma);
@@ -36,11 +36,11 @@ inline double BCH3Interval(unsigned int gamma, unsigned int S0, unsigned int s0)
    if (gamma == 0U)
      return sum;
 
-   if ((S0 >> (i-1)) & 1U == 1U)
+   if (((S0 >> (i-1)) & 1U) == 1U)
      return sum;
    else //(S0 >> (i-1)) & 1 == 0
    {
-     if ((gamma >> i) & 1U == 1U)
+     if (((gamma >> i) & 1U) == 1U)
      {
        gamma ^= (1U << i);
        sum += BCH3(s0, S0, gamma) << i;
