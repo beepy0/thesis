@@ -135,6 +135,7 @@ inline int CW4(unsigned long a, unsigned long b, unsigned long c, unsigned long 
 /*
   b-valued random variables
   2-wise and 4-wise CW scheme
+  3-wise H3 scheme
 */
 inline unsigned int CW2B(unsigned long a, unsigned long b, unsigned long x, unsigned int M)
 {
@@ -153,5 +154,20 @@ inline unsigned int CW4B(unsigned long a, unsigned long b, unsigned long c, unsi
   return res;
 }
 
+
+inline unsigned int H3(unsigned int key,
+                       unsigned int buckets_no,
+                       unsigned int seeds_val)
+{
+  unsigned int offset = 0;
+  unsigned int q_matrix[32] = {0};
+  for ( auto &row : q_matrix )
+  {
+    row = seeds_val + offset;
+    offset += 500;
+  }
+
+
+}
 
 #endif

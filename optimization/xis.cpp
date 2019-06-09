@@ -133,6 +133,27 @@ double Xi_CW2::interval_sum(unsigned int alpha, unsigned int beta)
 }
 
 
+Xi_H3::Xi_H3(unsigned int buckets_no, unsigned int seed_val)
+{
+  buckets_no = buckets_no;
+  seed_val = seed_val;
+}
+
+
+Xi_H3::~Xi_H3() = default;
+
+
+double Xi_H3::element(unsigned int key)
+{
+  double res = H3(key, buckets_no, seed_val);
+  return res;
+}
+
+
+double Xi_H3::interval_sum(unsigned int alpha, unsigned int beta)
+{
+  return -1;
+}
 
 
 Xi_CW2B::Xi_CW2B(unsigned int I1, unsigned int I2, unsigned int B)

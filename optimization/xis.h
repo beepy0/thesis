@@ -75,6 +75,22 @@ class Xi_CW2 : public Xi
 
 
 
+class Xi_H3 : public  Xi
+{
+  protected:
+    unsigned int buckets_no;
+    unsigned int seed_val;
+
+  public:
+    Xi_H3(unsigned int buckets_no, unsigned int seed_val);
+    virtual ~Xi_H3();
+
+    virtual double element(unsigned int key);
+    virtual double interval_sum(unsigned int alpha, unsigned int beta);
+};
+
+
+
 /*
 B-valued random variables that are 2-wise independent
 */
