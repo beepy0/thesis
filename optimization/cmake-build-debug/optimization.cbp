@@ -84,9 +84,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/meggamorty/CLionProjects/thesis/optimization/data_generator.h">
-			<Option target="optimization"/>
-		</Unit>
 		<Unit filename="/home/meggamorty/CLionProjects/thesis/optimization/gen_scheme.h">
 			<Option target="optimization"/>
 		</Unit>
@@ -94,12 +91,6 @@
 			<Option target="optimization"/>
 		</Unit>
 		<Unit filename="/home/meggamorty/CLionProjects/thesis/optimization/range_sum.h">
-			<Option target="optimization"/>
-		</Unit>
-		<Unit filename="/home/meggamorty/CLionProjects/thesis/optimization/relation.cpp">
-			<Option target="optimization"/>
-		</Unit>
-		<Unit filename="/home/meggamorty/CLionProjects/thesis/optimization/relation.h">
 			<Option target="optimization"/>
 		</Unit>
 		<Unit filename="/home/meggamorty/CLionProjects/thesis/optimization/sketches.cpp">

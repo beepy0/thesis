@@ -1,6 +1,5 @@
 #include <iostream>
 #include <algorithm> // for sorting
-#include "relation.h"
 #include "xis.h"
 
 #include "sketches.h"
