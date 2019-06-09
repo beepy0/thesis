@@ -116,7 +116,6 @@ int main() {
     const int tuples_no = 100000;
     unsigned int data[tuples_no] = {0};
     loadData(data);
-//    cout << data[3] << endl;
     sort(data, data + tuples_no);
 
     unsigned int freq_vector[tuples_no] = {0};
