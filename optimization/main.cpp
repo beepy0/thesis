@@ -32,7 +32,7 @@ void loadData(unsigned int dataArray[]) {
     int i = 0;
 
     std::ifstream fileStream ("/home/meggamorty/CLionProjects/thesis/"
-                              "optimization/data/zipf_stream_data_100k.csv");
+                              "optimization/data/zipf_stream_data_100.csv");
 
     if(fileStream.is_open())
     {
@@ -68,10 +68,14 @@ void computeManualFrequencyVector(const unsigned int data[],
                           unsigned int freq_vector[],
                           const int tuples_no)
 {
-    unsigned int current_value = 0;
+    unsigned int current_value = 1;
     int freq_vector_index = 0;
     for(int i = 0; i < tuples_no; i++)
     {
+        if (data[i] == 0)
+        {
+            continue;
+        }
         if(data[i] == current_value)
         {
             freq_vector[freq_vector_index] += 1;
@@ -86,6 +90,7 @@ void computeManualFrequencyVector(const unsigned int data[],
 
 void printFrequencies(const unsigned int freq_vector[], const int tuples_no)
 {
+    cout << endl << "Real frequencies: " << endl;
     for(int i = 0; i < tuples_no; i++)
     {
         if(freq_vector[i] != 0)
@@ -93,7 +98,7 @@ void printFrequencies(const unsigned int freq_vector[], const int tuples_no)
             cout << freq_vector[i] << ' ';
         }
     }
-    cout << endl;
+    cout << endl << endl;
 }
 
 long long computeManualSelfJoinSize(const unsigned int freq_vector[],
@@ -113,7 +118,7 @@ int main() {
     unsigned int i;
     const unsigned int buckets_no = 150;
     const unsigned int rows_no = 150;
-    const int tuples_no = 100000;
+    const int tuples_no = 100;
     unsigned int data[tuples_no] = {0};
     loadData(data);
     sort(data, data + tuples_no);
@@ -123,7 +128,7 @@ int main() {
     printFrequencies(freq_vector, tuples_no);
     long long manual_join_size = computeManualSelfJoinSize(freq_vector,
             tuples_no);
-    cout << "Manual join size computation is: "
+    cout << "Real join size computation is: "
          << manual_join_size << endl;
 
     unsigned int I1, I2;
