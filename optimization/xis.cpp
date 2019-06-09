@@ -133,19 +133,32 @@ double Xi_CW2::interval_sum(unsigned int alpha, unsigned int beta)
 }
 
 
-Xi_H3::Xi_H3(unsigned int seed, unsigned int buckets_number)
+Xi_H3::Xi_H3(unsigned int seed,
+             unsigned int bits_count,
+             unsigned int buckets_number)
 {
+  no_bits = bits_count;
   buckets_no = buckets_number;
-  seed_val = seed;
+
+  unsigned int offset = 0;
+  q_matrix = (unsigned*)malloc(sizeof(unsigned) * no_bits);
+  for( int i = 0; i < 32; i++)
+  {
+    q_matrix[i] = seed + offset;
+    offset += 500;
+  }
 }
 
 
-Xi_H3::~Xi_H3() = default;
+Xi_H3::~Xi_H3()
+{
+  free(q_matrix);
+}
 
 
 double Xi_H3::element(unsigned int key)
 {
-  auto res = (double)H3(key, seed_val, buckets_no);
+  auto res = (double)H3(key, q_matrix, no_bits, buckets_no);
   return res;
 }
 

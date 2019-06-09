@@ -79,10 +79,11 @@ class Xi_H3 : public  Xi
 {
   protected:
     unsigned int buckets_no;
-    unsigned int seed_val;
+    unsigned int no_bits;
+    unsigned int *q_matrix;
 
   public:
-    Xi_H3(unsigned int seed_val, unsigned int buckets_no);
+    Xi_H3(unsigned int seed_val, unsigned int no_bits, unsigned int buckets_no);
     virtual ~Xi_H3();
 
     virtual double element(unsigned int key);

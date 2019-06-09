@@ -145,8 +145,8 @@ int main() {
 
 
   unsigned int i;
-  const unsigned int buckets_no = 150;
-  const unsigned int rows_no = 150;
+  const unsigned int buckets_no = 130;
+  const unsigned int rows_no = 130;
   const int tuples_no = 100000;
   unsigned int data[tuples_no] = {0};
   loadData(data);
@@ -181,8 +181,9 @@ int main() {
 //    I1 = Random_Generate(5);
 //    I2 = Random_Generate(7);
 //    fagms_cw2b[i] = new Xi_CW2B(I1, I2, buckets_no);
-    fagms_cw2b[i] = new Xi_H3(1333337u, buckets_no);
+    fagms_cw2b[i] = new Xi_H3(1333337u, 32u, buckets_no);
   }
+
 
   //build the sketches for each of the two relations
   Sketch *agms1 = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
