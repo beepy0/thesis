@@ -191,6 +191,15 @@ int main() {
 
   timeSketchUpdate(agms1, data, tuples_no, "AGMS");
   timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
+  // multiple run avg time testing
+//  int runs = 1;
+//  double sum = 0.0;
+//  for(int i = 0; i < runs; i++)
+//  {
+//    cout << endl << sum << endl;
+//    sum += timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS", sum);
+//  }
+//  cout << endl << "Average after " << runs << " runs is: " << sum/runs << endl;
 
 
   //compute the sketch estimate
