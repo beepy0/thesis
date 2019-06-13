@@ -1,6 +1,7 @@
 #include "gen_scheme.h"
 #include "xis.h"
 #include "range_sum.h"
+#include <iostream>
 
 using namespace std;
 
@@ -52,12 +53,14 @@ double Xi_EH3::interval_sum(unsigned int alpha, unsigned int beta)
 
 
 
-Xi_H3::Xi_H3(unsigned int seed,
-             unsigned int bits_count,
-             unsigned int buckets_number)
+Xi_H3::Xi_H3(const unsigned int seed,
+             const unsigned int bits_count,
+             const unsigned int buckets_number,
+             const unsigned int mask)
 {
   no_bits = bits_count;
   buckets_no = buckets_number;
+  truncation_mask = mask;
 
   unsigned int offset = 0;
   q_matrix = (unsigned*)malloc(sizeof(unsigned) * no_bits);
@@ -77,8 +80,7 @@ Xi_H3::~Xi_H3()
 
 double Xi_H3::element(unsigned int key)
 {
-  auto res = (double)H3(key, q_matrix, no_bits, buckets_no);
-  return res;
+  return (double)( H3(key, q_matrix, no_bits) & truncation_mask );
 }
 
 

@@ -12,8 +12,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81839ab2-a4e3-41bf-96c3-6c422dd061f9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/optimization.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/optimization.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/optimization.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/optimization.dir/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/optimization.dir/xis.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/optimization.dir/xis.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/optimization" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/optimization" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen_scheme.h" beforeDir="false" afterPath="$PROJECT_DIR$/gen_scheme.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/xis.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xis.h" beforeDir="false" afterPath="$PROJECT_DIR$/xis.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,20 +35,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/xis.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="74" column="9" selection-start-line="74" selection-start-column="9" selection-end-line="74" selection-end-column="9" />
+            <state relative-caret-position="448">
+              <caret line="59" column="45" lean-forward="true" selection-start-line="59" selection-start-column="45" selection-end-line="59" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/xis.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="404">
-              <caret line="113" column="8" selection-start-line="113" selection-start-column="8" selection-end-line="113" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="430">
+              <caret line="78" lean-forward="true" selection-start-line="78" selection-end-line="78" />
             </state>
           </provider>
         </entry>
@@ -49,7 +53,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sketches.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
+            <state relative-caret-position="314">
               <caret line="219" column="49" selection-start-line="219" selection-start-column="49" selection-end-line="219" selection-end-column="49" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
@@ -58,7 +62,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sketches.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="214">
@@ -70,8 +74,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gen_scheme.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="176" column="1" selection-start-line="176" selection-start-column="1" selection-end-line="176" selection-end-column="1" />
+            <state relative-caret-position="406">
+              <caret line="166" column="3" lean-forward="true" selection-start-line="166" selection-start-column="3" selection-end-line="166" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="499">
+              <caret line="193" column="74" selection-start-line="193" selection-start-column="74" selection-end-line="193" selection-end-column="74" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -143,20 +159,20 @@
         <option value="$PROJECT_DIR$/data/zipf_stream_data_small.txt" />
         <option value="$PROJECT_DIR$/sketches.h" />
         <option value="$PROJECT_DIR$/sketches.cpp" />
-        <option value="$PROJECT_DIR$/gen_scheme.h" />
-        <option value="$PROJECT_DIR$/xis.h" />
         <option value="$PROJECT_DIR$/RM7_range_sum.h" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/xis.cpp" />
         <option value="$PROJECT_DIR$/range_sum.h" />
         <option value="$PROJECT_DIR$/main.cpp" />
+        <option value="$PROJECT_DIR$/xis.h" />
+        <option value="$PROJECT_DIR$/gen_scheme.h" />
+        <option value="$PROJECT_DIR$/xis.cpp" />
       </list>
     </option>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="388" />
-    <option name="width" value="1941" />
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="x" value="789" />
+    <option name="width" value="1761" />
     <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -165,6 +181,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -194,7 +211,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -252,22 +268,23 @@
       <workItem from="1559464826999" duration="8891000" />
       <workItem from="1559836426668" duration="14798000" />
       <workItem from="1560076820468" duration="20490000" />
+      <workItem from="1560452330686" duration="3251000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64867000" />
+    <option name="totallyTimeSpent" value="69220000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="2560" height="1080" extended-state="6" />
+    <frame x="789" y="0" width="1761" height="1080" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.14748201" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.14652656" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32861805" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.25244832" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.25244832" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934713" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -284,12 +301,12 @@
       <window_info anchor="right" id="Database" order="3" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.30015987" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14652656" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32861805" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.25244832" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.25244832" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934713" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -316,10 +333,10 @@
     <entry file="file://$PROJECT_DIR$/data/zipf_stream_data_small.csv" />
     <entry file="file://$PROJECT_DIR$/data/zipf_stream_data.csv" />
     <entry file="file://$PROJECT_DIR$/data/zipf_stream_data_100k.csv">
+      <provider selected="true" editor-type-id="csv-text-editor" />
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
-      <provider selected="true" editor-type-id="csv-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/cmake-build-debug/Makefile">
       <provider selected="true" editor-type-id="text-editor" />
@@ -333,24 +350,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sketch_sampling.cpp" />
     <entry file="file://$PROJECT_DIR$/relation.cpp" />
-    <entry file="file://$PROJECT_DIR$/sketches.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="219" column="49" selection-start-line="219" selection-start-column="49" selection-end-line="219" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RM7_range_sum.h" />
-    <entry file="file://$PROJECT_DIR$/xis.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="74" column="9" selection-start-line="74" selection-start-column="9" selection-end-line="74" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -365,23 +365,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xis.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="113" column="8" selection-start-line="113" selection-start-column="8" selection-end-line="113" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gen_scheme.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="176" column="1" selection-start-line="176" selection-start-column="1" selection-end-line="176" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../gen_scheme.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2600" />
@@ -389,11 +372,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
-          <caret line="194" column="17" lean-forward="true" selection-start-line="194" selection-start-column="17" selection-end-line="194" selection-end-column="17" />
+        <state relative-caret-position="499">
+          <caret line="193" column="74" selection-start-line="193" selection-start-column="74" selection-end-line="193" selection-end-column="74" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xis.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="59" column="45" lean-forward="true" selection-start-line="59" selection-start-column="45" selection-end-line="59" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -401,6 +391,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
           <caret line="86" column="6" selection-start-line="86" selection-start-column="6" selection-end-line="86" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen_scheme.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="166" column="3" lean-forward="true" selection-start-line="166" selection-start-column="3" selection-end-line="166" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sketches.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="219" column="49" selection-start-line="219" selection-start-column="49" selection-end-line="219" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xis.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="78" lean-forward="true" selection-start-line="78" selection-end-line="78" />
         </state>
       </provider>
     </entry>

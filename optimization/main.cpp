@@ -1,19 +1,17 @@
 #include <iostream>
 #include <algorithm> // for sorting
 #include "xis.h"
-
 #include "sketches.h"
 #include <sys/time.h>
 #include <time.h>
 #include <stdio.h>
-
 #include <stdlib.h>
 #include <fstream>
 #include <vector>
-
 #include <string>
-
 #include <chrono>  // for high_resolution_clock
+#include "math.h"
+
 
 using namespace std;
 
@@ -115,6 +113,19 @@ long long computeManualSelfJoinSize(const unsigned int freq_vector[],
 }
 
 
+unsigned int computeTruncationMask(const unsigned int buckets_no)
+{
+  unsigned int usable_bits_size = ceil(log2(buckets_no));
+  unsigned int result = 0;
+  for(unsigned int i = 0; i < usable_bits_size; i++)
+  {
+    result += pow(2, i);
+  }
+
+  return result;
+}
+
+
 //void get_key_bits(unsigned int key, unsigned *bits)
 //{
 //  unsigned
@@ -144,7 +155,8 @@ int main() {
 
 
   unsigned int i;
-  const unsigned int buckets_no = 130;
+  const unsigned int buckets_no = 129;
+  const unsigned int truncation_mask = computeTruncationMask(buckets_no);
   const unsigned int rows_no = 130;
   const int tuples_no = 100000;
   unsigned int data[tuples_no] = {0};
@@ -180,7 +192,7 @@ int main() {
 //    I1 = Random_Generate(5);
 //    I2 = Random_Generate(7);
 //    fagms_cw2b[i] = new Xi_CW2B(I1, I2, buckets_no);
-    fagms_cw2b[i] = new Xi_H3(1333337u, 32u, buckets_no);
+    fagms_cw2b[i] = new Xi_H3(1333337u, 32u, buckets_no, truncation_mask);
   }
 
 

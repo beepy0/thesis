@@ -158,22 +158,15 @@ inline unsigned int CW4B(unsigned long a, unsigned long b, unsigned long c, unsi
 
 inline unsigned int H3(unsigned int key,
                        const unsigned int *q_matrix,
-                       const unsigned int no_bits,
-                       const unsigned int buckets_no)
+                       const unsigned int no_bits)
 {
   unsigned int res = 0u;
   for( unsigned int i = 0; i < no_bits; i++ )
   {
-    if(((key >> i) & 1) == 1u) {
-      res ^= q_matrix[i];
-    }
-    else {
-      res ^= 0u;
-    }
+    res ^= q_matrix[i] * ((key >> i) & 1);
   }
 
-
-  return res % buckets_no;
+  return res;
 }
 
 #endif

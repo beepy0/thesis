@@ -51,9 +51,10 @@ class Xi_H3 : public  Xi
     unsigned int buckets_no;
     unsigned int no_bits;
     unsigned int *q_matrix;
+    unsigned int truncation_mask;
 
   public:
-    Xi_H3(unsigned int seed_val, unsigned int no_bits, unsigned int buckets_no);
+    Xi_H3(unsigned int seed_val, unsigned int no_bits, unsigned int buckets_no, unsigned int truncation_mask);
     virtual ~Xi_H3();
 
     virtual double element(unsigned int key);
