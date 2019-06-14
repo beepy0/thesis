@@ -155,7 +155,7 @@ int main() {
 
 
   unsigned int i;
-  const unsigned int buckets_no = 129;
+  const unsigned int buckets_no = 128;
   const unsigned int truncation_mask = computeTruncationMask(buckets_no);
   auto floor_offset = (unsigned int)floor(log2(buckets_no));
   auto floor_value = (unsigned int)pow(2, floor_offset);
@@ -169,8 +169,8 @@ int main() {
   unsigned int freq_vector[tuples_no] = {0};
   computeManualFrequencyVector(data, freq_vector, tuples_no);
   printFrequencies(freq_vector, tuples_no);
-  long long manual_join_size = computeManualSelfJoinSize(freq_vector,
-      tuples_no);
+  long long manual_join_size =
+      computeManualSelfJoinSize(freq_vector, tuples_no);
   cout << "Real join size computation is: " << manual_join_size << endl;
 
   unsigned int I1, I2;

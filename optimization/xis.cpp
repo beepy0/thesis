@@ -86,6 +86,7 @@ double Xi_H3::element(unsigned int key)
   const unsigned int next_power_bit = truncated_value >> floor_offset;
   unsigned int result = (truncated_value - floor_value) * (next_power_bit & 1u)
       + (truncated_value) * (next_power_bit ^ 1u);
+
   return (double)result;
 }
 
