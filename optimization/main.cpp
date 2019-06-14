@@ -3,14 +3,14 @@
 #include "xis.h"
 #include "sketches.h"
 #include <sys/time.h>
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <ctime>
+#include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <vector>
 #include <string>
 #include <chrono>  // for high_resolution_clock
-#include "math.h"
+#include <cmath>
 
 
 using namespace std;
@@ -22,7 +22,7 @@ unsigned int Random_Generate(unsigned int seed)
   auto x = (unsigned int)rand();
   auto h = (unsigned int)rand();
 
-  return x ^ ((h & 1) << 31);
+  return x ^ ((h & 1u) << 31u);
 }
 
 void loadData(unsigned int dataArray[]) {
@@ -36,7 +36,7 @@ void loadData(unsigned int dataArray[]) {
     std::string line;
     while(std::getline(fileStream, line, '\n'))
     {
-      dataArray[i] = std::stoul(line);
+      dataArray[i] = (unsigned int)std::stoul(line);
       i++;
     }
     fileStream.close();
@@ -115,11 +115,11 @@ long long computeManualSelfJoinSize(const unsigned int freq_vector[],
 
 unsigned int computeTruncationMask(const unsigned int buckets_no)
 {
-  unsigned int usable_bits_size = ceil(log2(buckets_no));
-  unsigned int result = 0;
+  auto usable_bits_size = (unsigned int)ceil(log2(buckets_no));
+  unsigned int result = 0u;
   for(unsigned int i = 0; i < usable_bits_size; i++)
   {
-    result += pow(2, i);
+    result += (unsigned int)pow(2, i);
   }
 
   return result;
@@ -175,7 +175,7 @@ int main() {
 
   unsigned int I1, I2;
   //generate the pseudo-random numbers for AGMS sketches; use EH3
-  Xi **agms_eh3 = new Xi*[buckets_no * rows_no];
+  auto **agms_eh3 = new Xi*[buckets_no * rows_no];
   for (i = 0; i < buckets_no * rows_no; i++)
   {
     I1 = Random_Generate(5);
@@ -184,26 +184,21 @@ int main() {
   }
 
   //generate the pseudo-random numbers for FAGMS sketches; use EH3 and CW2B
-  Xi **fagms_eh3 = new Xi*[rows_no];
-  Xi **fagms_cw2b = new Xi*[rows_no];
+  auto **fagms_eh3 = new Xi*[rows_no];
+  auto **fagms_h3 = new Xi*[rows_no];
   for (i = 0; i < rows_no; i++)
   {
     I1 = Random_Generate(5);
     I2 = Random_Generate(7);
     fagms_eh3[i] = new Xi_EH3(I1, I2);
-
-//    I1 = Random_Generate(5);
-//    I2 = Random_Generate(7);
-//    fagms_cw2b[i] = new Xi_CW2B(I1, I2, buckets_no);
-    fagms_cw2b[i] = new Xi_H3(1333337u, 32u, truncation_mask,
+    fagms_h3[i] = new Xi_H3(1333337u, 32u, truncation_mask,
                                 floor_offset, floor_value);
   }
-
 
   //build the sketches for each of the two relations
   Sketch *agms1 = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
   Sketch *fagms1 = new FAGMS_Sketch(buckets_no, rows_no,
-                                    fagms_cw2b, fagms_eh3);
+                                    fagms_h3, fagms_eh3);
 
   timeSketchUpdate(agms1, data, tuples_no, "AGMS");
   timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
@@ -230,10 +225,10 @@ int main() {
   for (i = 0; i < rows_no; i++)
   {
     delete fagms_eh3[i];
-    delete fagms_cw2b[i];
+    delete fagms_h3[i];
   }
   delete [] fagms_eh3;
-  delete [] fagms_cw2b;
+  delete [] fagms_h3;
 
   delete agms1;
   delete fagms1;

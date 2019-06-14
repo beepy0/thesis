@@ -20,12 +20,12 @@ Xi_EH3::Xi_EH3(unsigned int I1, unsigned int I2)
 {
   const unsigned int k_mask = 0xffffffff;
 
-  seeds[0] = ((I1 << 16)^(I2 & 0177777)) & 1U;
+  seeds[0] = ((I1 << 16u)^(I2 & 0177777u)) & 1u;
 
-  I1 = 36969*(I1 & 0177777) + (I1>>16);
-  I2 = 18000*(I2 & 0177777) + (I2>>16);
+  I1 = 36969u*(I1 & 0177777u) + (I1>>16u);
+  I2 = 18000u*(I2 & 0177777u) + (I2>>16u);
 
-  seeds[1] = ((I1 << 16)^(I2 & 0177777)) & k_mask;
+  seeds[1] = ((I1 << 16u)^(I2 & 0177777u)) & k_mask;
 }
 
 
@@ -95,44 +95,3 @@ double Xi_H3::interval_sum(unsigned int alpha, unsigned int beta)
 {
   return -1;
 }
-
-
-Xi_CW2B::Xi_CW2B(unsigned int I1, unsigned int I2, unsigned int B)
-{
-  buckets_no = B;
-
-  const unsigned int k_mask = 0xffffffff;
-
-  seeds[0] = ((I1 << 16)^(I2 & 0177777)) & 1UL;
-
-  I1 = 36969*(I1 & 0177777) + (I1>>16);
-  I2 = 18000*(I2 & 0177777) + (I2>>16);
-
-  seeds[1] = ((I1 << 16)^(I2 & 0177777)) & k_mask;
-}
-
-
-Xi_CW2B::~Xi_CW2B() = default;
-
-
-double Xi_CW2B::element(unsigned int j)
-{
-  unsigned long a = seeds[0];
-  unsigned long b = seeds[1];
-
-  double res = CW2B(a, b, j, buckets_no);
-  return res;
-}
-
-
-double Xi_CW2B::interval_sum(unsigned int alpha, unsigned int beta)
-{
-  return -1;
-}
-
-
-
-
-
-
-

@@ -18,7 +18,6 @@ class Sketch
   public:
     double Average(double *x, int n);
     double Median(double *x, int n);
-    double Min(double *x, int n);
 
 
     virtual ~Sketch();
@@ -57,15 +56,15 @@ class AGMS_Sketch : public Sketch
 
   public:
     AGMS_Sketch(unsigned int cols_no, unsigned int rows_no, Xi **xi_pm1);
-    virtual ~AGMS_Sketch();
+    ~AGMS_Sketch() override;
 
-    virtual void Clear_Sketch();
+    void Clear_Sketch() override;
 
-    virtual void Update_Sketch(unsigned int key, double func);
+    void Update_Sketch(unsigned int key, double func) override;
 
-    virtual double Size_Of_Join(Sketch *s1);
+    double Size_Of_Join(Sketch *s1) override;
 
-    virtual double Self_Join_Size();
+    double Self_Join_Size() override;
 };
 
 
@@ -90,80 +89,15 @@ class FAGMS_Sketch : public Sketch
 
   public:
     FAGMS_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket, Xi **xi_pm1);
-    virtual ~FAGMS_Sketch();
+    ~FAGMS_Sketch() override;
 
-    virtual void Clear_Sketch();
+    void Clear_Sketch() override;
 
-    virtual void Update_Sketch(unsigned int key, double func);
+    void Update_Sketch(unsigned int key, double func) override;
 
-    virtual double Size_Of_Join(Sketch *s1);
+    double Size_Of_Join(Sketch *s1) override;
 
-    virtual double Self_Join_Size();
-};
-
-
-
-/*
-Fast-Count sketches proposed in the paper:
-	1) "Tabulation-based 4-universal hashing with applications to second moment estimation" by M. Thorup and Y. Zhang
-rows_no basic estimators are computed by hashing the key values to an array with buckets_no elements. Then the average of the rows_no estimators is returned as the final estimator. sketch_elem is an array of rows_no * buckets_no counters. A key is hashed using the xi_bucket pseudo-random variable corresponding to the actual row, then the counter in that bucket is updated with the value corresponding to the key.
-*/
-
-class Fast_Count_Sketch : public Sketch
-{
-  protected:
-    unsigned int buckets_no;
-    unsigned int rows_no;
-
-    double *sketch_elem;
-
-    Xi **xi_bucket;
-
-
-  public:
-    Fast_Count_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket);
-    virtual ~Fast_Count_Sketch();
-
-    virtual void Clear_Sketch();
-
-    virtual void Update_Sketch(unsigned int key, double func);
-
-    virtual double Size_Of_Join(Sketch *s1);
-
-    virtual double Self_Join_Size();
-};
-
-
-
-
-/*
-Count-Min sketches proposed in the paper:
-	1) "An improved data stream summary: the count-min sketch and its applications" by G. Cormode and S. Muthukrishnan
-rows_no basic estimators are computed by hashing the key values to an array with buckets_no elements. Then the minimum of the rows_no estimators is returned as the final estimator. sketch_elem is an array of rows_no * buckets_no counters. A key is hashed using the xi_bucket pseudo-random variable corresponding to the actual row, then the counter in that bucket is updated with the value corresponding to the key.
-*/
-
-class Count_Min_Sketch : public Sketch
-{
-  protected:
-    unsigned int buckets_no;
-    unsigned int rows_no;
-
-    double *sketch_elem;
-
-    Xi **xi_bucket;
-
-
-  public:
-    Count_Min_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket);
-    virtual ~Count_Min_Sketch();
-
-    virtual void Clear_Sketch();
-
-    virtual void Update_Sketch(unsigned int key, double func);
-
-    virtual double Size_Of_Join(Sketch *s1);
-
-    virtual double Self_Join_Size();
+    double Self_Join_Size() override;
 };
 
 

@@ -37,10 +37,10 @@ class Xi_EH3 : public Xi
 
   public:
     Xi_EH3(unsigned int I1, unsigned int I2);
-    virtual ~Xi_EH3();
+    ~Xi_EH3() override;
 
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
+    double element(unsigned int j) override;
+    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
 
 
@@ -58,32 +58,11 @@ class Xi_H3 : public  Xi
     Xi_H3(unsigned int seed_val, unsigned int no_bits,
           unsigned int truncation_mask, unsigned int floor_offset,
           unsigned int floor_value);
-    virtual ~Xi_H3();
+    ~Xi_H3() override;
 
-    virtual double element(unsigned int key);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
+    double element(unsigned int key) override;
+    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
-
-
-
-/*
-B-valued random variables that are 2-wise independent
-*/
-
-class Xi_CW2B : public Xi
-{
-  protected:
-    unsigned int seeds[2];
-    unsigned int buckets_no;
-
-  public:
-    Xi_CW2B(unsigned int I1, unsigned int I2, unsigned int B);
-    virtual ~Xi_CW2B();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
-
 
 
 
