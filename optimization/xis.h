@@ -30,21 +30,6 @@ class Xi
 +/-1 random variables that are 3-wise independent
 */
 
-class Xi_BCH3 : public Xi
-{
-  protected:
-    unsigned int seeds[2];
-
-  public:
-    Xi_BCH3(unsigned int I1, unsigned int I2);
-    virtual ~Xi_BCH3();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
-
-
-
 class Xi_EH3 : public Xi
 {
   protected:
@@ -52,157 +37,33 @@ class Xi_EH3 : public Xi
 
   public:
     Xi_EH3(unsigned int I1, unsigned int I2);
-    virtual ~Xi_EH3();
+    ~Xi_EH3() override;
 
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
+    double element(unsigned int j) override;
+    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
 
 
 
-class Xi_CW2 : public Xi
+class Xi_H3 : public  Xi
 {
   protected:
-    unsigned int seeds[2];
+    unsigned int no_bits;
+    unsigned int *q_matrix;
+    unsigned int truncation_mask;
+    unsigned int floor_offset;
+    unsigned int floor_value;
 
   public:
-    Xi_CW2(unsigned int I1, unsigned int I2);
-    virtual ~Xi_CW2();
+    Xi_H3(unsigned int seed_val, unsigned int no_bits,
+          unsigned int truncation_mask, unsigned int floor_offset,
+          unsigned int floor_value);
+    ~Xi_H3() override;
 
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
+    double element(unsigned int key) override;
+    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
 
-
-
-/*
-B-valued random variables that are 2-wise independent
-*/
-
-class Xi_CW2B : public Xi
-{
-  protected:
-    unsigned int seeds[2];
-    unsigned int buckets_no;
-
-  public:
-    Xi_CW2B(unsigned int I1, unsigned int I2, unsigned int B);
-    virtual ~Xi_CW2B();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
-
-
-
-/*
-+/-1 random variables that are 4-wise independent
-*/
-
-class Xi_CW4 : public Xi
-{
-  protected:
-    unsigned int seeds[4];
-
-  public:
-    Xi_CW4(unsigned int I1, unsigned int I2);
-    virtual ~Xi_CW4();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
-
-
-
-/*
-B-valued random variables that are 4-wise independent
-*/
-
-class Xi_CW4B : public Xi
-{
-  protected:
-    unsigned int seeds[4];
-    unsigned int buckets_no;
-
-  public:
-    Xi_CW4B(unsigned int I1, unsigned int I2, unsigned int B);
-    virtual ~Xi_CW4B();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
-
-
-
-/*
-+/-1 random variables that are 5-wise independent
-*/
-
-class Xi_BCH5 : public Xi
-{
-  protected:
-    unsigned int seeds[3];
-
-  public:
-    Xi_BCH5(unsigned int I1, unsigned int I2);
-    virtual ~Xi_BCH5();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
-
-
-
-class Xi_RM7 : public Xi
-{
-  protected:
-    unsigned int seeds[33];
-
-  public:
-    Xi_RM7(unsigned int I1, unsigned int I2);
-    virtual ~Xi_RM7();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
-
-
-
-
-
-/*
-Random variables for dyadic mapping as an alternative to fast range-summation
-*/
-
-class Xi_Dyadic_Map_EH3 : public Xi
-{
-  protected:
-    unsigned int seeds[2];
-    unsigned int dom_size;
-
-  public:
-    Xi_Dyadic_Map_EH3(unsigned int Dom_size, unsigned int I1, unsigned int I2);
-    virtual ~Xi_Dyadic_Map_EH3();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
-
-
-
-class Xi_Dyadic_Map_BCH5 : public Xi
-{
-  protected:
-    unsigned int seeds[3];
-    unsigned int dom_size;
-
-  public:
-    Xi_Dyadic_Map_BCH5(unsigned int Dom_size, unsigned int I1, unsigned int I2);
-    virtual ~Xi_Dyadic_Map_BCH5();
-
-    virtual double element(unsigned int j);
-    virtual double interval_sum(unsigned int alpha, unsigned int beta);
-};
 
 
 #endif

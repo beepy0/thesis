@@ -150,33 +150,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/optimization.dir/build.make CMakeFiles/optimization.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-relation.o: relation.cpp.o
-
-.PHONY : relation.o
-
-# target to build an object file
-relation.cpp.o:
-	$(MAKE) -f CMakeFiles/optimization.dir/build.make CMakeFiles/optimization.dir/relation.cpp.o
-.PHONY : relation.cpp.o
-
-relation.i: relation.cpp.i
-
-.PHONY : relation.i
-
-# target to preprocess a source file
-relation.cpp.i:
-	$(MAKE) -f CMakeFiles/optimization.dir/build.make CMakeFiles/optimization.dir/relation.cpp.i
-.PHONY : relation.cpp.i
-
-relation.s: relation.cpp.s
-
-.PHONY : relation.s
-
-# target to generate assembly for a file
-relation.cpp.s:
-	$(MAKE) -f CMakeFiles/optimization.dir/build.make CMakeFiles/optimization.dir/relation.cpp.s
-.PHONY : relation.cpp.s
-
 sketches.o: sketches.cpp.o
 
 .PHONY : sketches.o
@@ -243,9 +216,6 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... relation.o"
-	@echo "... relation.i"
-	@echo "... relation.s"
 	@echo "... sketches.o"
 	@echo "... sketches.i"
 	@echo "... sketches.s"
