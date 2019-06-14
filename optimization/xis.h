@@ -48,13 +48,16 @@ class Xi_EH3 : public Xi
 class Xi_H3 : public  Xi
 {
   protected:
-    unsigned int buckets_no;
     unsigned int no_bits;
     unsigned int *q_matrix;
     unsigned int truncation_mask;
+    unsigned int floor_offset;
+    unsigned int floor_value;
 
   public:
-    Xi_H3(unsigned int seed_val, unsigned int no_bits, unsigned int buckets_no, unsigned int truncation_mask);
+    Xi_H3(unsigned int seed_val, unsigned int no_bits,
+          unsigned int truncation_mask, unsigned int floor_offset,
+          unsigned int floor_value);
     virtual ~Xi_H3();
 
     virtual double element(unsigned int key);

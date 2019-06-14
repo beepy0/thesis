@@ -55,12 +55,14 @@ double Xi_EH3::interval_sum(unsigned int alpha, unsigned int beta)
 
 Xi_H3::Xi_H3(const unsigned int seed,
              const unsigned int bits_count,
-             const unsigned int buckets_number,
-             const unsigned int mask)
+             const unsigned int mask,
+             const unsigned int floor_size,
+             const unsigned int floor_val)
 {
   no_bits = bits_count;
-  buckets_no = buckets_number;
   truncation_mask = mask;
+  floor_offset = floor_size;
+  floor_value = floor_val;
 
   unsigned int offset = 0;
   q_matrix = (unsigned*)malloc(sizeof(unsigned) * no_bits);
@@ -80,7 +82,11 @@ Xi_H3::~Xi_H3()
 
 double Xi_H3::element(unsigned int key)
 {
-  return (double)( H3(key, q_matrix, no_bits) & truncation_mask );
+  unsigned int truncated_value = H3(key, q_matrix, no_bits) & truncation_mask;
+  const unsigned int next_power_bit = truncated_value >> floor_offset;
+  unsigned int result = (truncated_value - floor_value) * (next_power_bit & 1u)
+      + (truncated_value) * (next_power_bit ^ 1u);
+  return (double)result;
 }
 
 

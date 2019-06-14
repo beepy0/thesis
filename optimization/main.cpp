@@ -157,9 +157,12 @@ int main() {
   unsigned int i;
   const unsigned int buckets_no = 129;
   const unsigned int truncation_mask = computeTruncationMask(buckets_no);
+  auto floor_offset = (unsigned int)floor(log2(buckets_no));
+  auto floor_value = (unsigned int)pow(2, floor_offset);
   const unsigned int rows_no = 130;
   const int tuples_no = 100000;
   unsigned int data[tuples_no] = {0};
+
   loadData(data);
   sort(data, data + tuples_no);
 
@@ -192,7 +195,8 @@ int main() {
 //    I1 = Random_Generate(5);
 //    I2 = Random_Generate(7);
 //    fagms_cw2b[i] = new Xi_CW2B(I1, I2, buckets_no);
-    fagms_cw2b[i] = new Xi_H3(1333337u, 32u, buckets_no, truncation_mask);
+    fagms_cw2b[i] = new Xi_H3(1333337u, 32u, truncation_mask,
+                                floor_offset, floor_value);
   }
 
 
