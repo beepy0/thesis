@@ -28,8 +28,7 @@ unsigned int Random_Generate(unsigned int seed)
 void loadData(unsigned int dataArray[]) {
   int i = 0;
 
-  std::ifstream fileStream ("/home/meggamorty/CLionProjects/thesis/"
-                            "optimization/data/zipf_stream_data_100k.csv");
+  std::ifstream fileStream ("data/zipf_stream_data_100k.csv");
 
   if(fileStream.is_open())
   {
@@ -184,8 +183,6 @@ int main() {
     agms_eh3[i] = new Xi_EH3(I1, I2);
   }
 
-  cout << I1 << " " << I2 << endl;
-
   //generate the pseudo-random numbers for FAGMS sketches; use EH3 and CW2B
   auto **fagms_eh3 = new Xi*[rows_no];
   auto **fagms_h3 = new Xi*[rows_no];
@@ -195,8 +192,6 @@ int main() {
     fagms_h3[i] = new Xi_H3B(1333337u, 32u, truncation_mask,
                                 floor_offset, floor_value);
   }
-
-  cout << I1 << " " << I2 << endl;
 
   //build the sketches for each of the two relations
   Sketch *agms1 = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
