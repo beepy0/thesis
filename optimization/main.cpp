@@ -174,26 +174,29 @@ int main() {
   cout << "Real join size computation is: " << manual_join_size << endl;
 
   unsigned int I1, I2;
+  //fix random seed variables for cross-platform for testing
+  I1 = 2737495323u;
+  I2 = 3193102325u;
   //generate the pseudo-random numbers for AGMS sketches; use EH3
   auto **agms_eh3 = new Xi*[buckets_no * rows_no];
   for (i = 0; i < buckets_no * rows_no; i++)
   {
-    I1 = Random_Generate(5);
-    I2 = Random_Generate(7);
     agms_eh3[i] = new Xi_EH3(I1, I2);
   }
+
+  cout << I1 << " " << I2 << endl;
 
   //generate the pseudo-random numbers for FAGMS sketches; use EH3 and CW2B
   auto **fagms_eh3 = new Xi*[rows_no];
   auto **fagms_h3 = new Xi*[rows_no];
   for (i = 0; i < rows_no; i++)
   {
-    I1 = Random_Generate(5);
-    I2 = Random_Generate(7);
     fagms_eh3[i] = new Xi_EH3(I1, I2);
     fagms_h3[i] = new Xi_H3B(1333337u, 32u, truncation_mask,
                                 floor_offset, floor_value);
   }
+
+  cout << I1 << " " << I2 << endl;
 
   //build the sketches for each of the two relations
   Sketch *agms1 = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
