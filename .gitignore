@@ -16,3 +16,4 @@ cmake-build-debug/*
 
 # Ignore Intellij Project metadata
 .idea/*
+optimization/*

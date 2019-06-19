@@ -14,5 +14,6 @@
 # Ignore tmp-local-build files
 cmake-build-debug/*
 
+
 # Ignore Intellij Project metadata
 .idea/*
