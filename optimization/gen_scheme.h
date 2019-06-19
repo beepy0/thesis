@@ -38,13 +38,13 @@ inline unsigned int seq_xor(unsigned int x)
   +-1 random variables
   3-wise independent schemes
 */
-inline int EH3(unsigned int i0, unsigned int I1, unsigned int j)
+inline unsigned int EH3(unsigned int i0, unsigned int I1, unsigned int j)
 {
   unsigned int mask = 0xAAAAAAAA;
   unsigned int p_res = (I1&j) ^ (j & (j<<1u) & mask);
 
   // TODO SIMD
-  int res = (((i0 ^ seq_xor(p_res)) & 1U) == 1U) ? 1 : -1;
+  unsigned int res = (((i0 ^ seq_xor(p_res)) & 1U) == 1U) ? 1u : -1u;
   return res;
 }
 

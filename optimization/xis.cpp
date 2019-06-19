@@ -32,12 +32,12 @@ Xi_EH3::Xi_EH3(unsigned int I1, unsigned int I2)
 Xi_EH3::~Xi_EH3() = default;
 
 
-double Xi_EH3::element(unsigned int j)
+unsigned int Xi_EH3::element(unsigned int j)
 {
   unsigned int i0 = seeds[0];
   unsigned int i1 = seeds[1];
 
-  double res = EH3(i0, i1, j);
+  unsigned int res = EH3(i0, i1, j);
   return res;
 }
 
@@ -53,7 +53,7 @@ double Xi_EH3::interval_sum(unsigned int alpha, unsigned int beta)
 
 
 
-Xi_H3::Xi_H3(const unsigned int seed,
+Xi_H3B::Xi_H3B(const unsigned int seed,
              const unsigned int bits_count,
              const unsigned int mask,
              const unsigned int floor_size,
@@ -74,24 +74,24 @@ Xi_H3::Xi_H3(const unsigned int seed,
 }
 
 
-Xi_H3::~Xi_H3()
+Xi_H3B::~Xi_H3B()
 {
   free(q_matrix);
 }
 
 
-double Xi_H3::element(unsigned int key)
+unsigned int Xi_H3B::element(unsigned int key)
 {
   unsigned int truncated_value = H3(key, q_matrix, no_bits) & truncation_mask;
   const unsigned int next_power_bit = truncated_value >> floor_offset;
   unsigned int result = (truncated_value - floor_value) * (next_power_bit & 1u)
       + (truncated_value) * (next_power_bit ^ 1u);
 
-  return (double)result;
+  return result;
 }
 
 
-double Xi_H3::interval_sum(unsigned int alpha, unsigned int beta)
+double Xi_H3B::interval_sum(unsigned int alpha, unsigned int beta)
 {
   return -1;
 }

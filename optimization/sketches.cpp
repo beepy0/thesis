@@ -111,7 +111,7 @@ void AGMS_Sketch::Clear_Sketch()
 void AGMS_Sketch::Update_Sketch(unsigned int key, double func)
 {
   for (int i = 0; i < int(rows_no * cols_no); i++)
-    sketch_elem[i] = sketch_elem[i] + xi_pm1[i]->element(key) * func;
+    sketch_elem[i] += (int)xi_pm1[i]->element(key) * func;
 }
 
 
@@ -199,8 +199,8 @@ void FAGMS_Sketch::Update_Sketch(unsigned int key, double func)
 {
   for (int i = 0; i < (int)rows_no; i++)
   {
-    auto bucket = (int)xi_bucket[i]->element(key);
-    sketch_elem[i * buckets_no + bucket] = sketch_elem[i * buckets_no + bucket] + xi_pm1[i]->element(key) * func;
+    unsigned int bucket = xi_bucket[i]->element(key);
+    sketch_elem[i * buckets_no + bucket] += (int)xi_pm1[i]->element(key) * func;
   }
 }
 

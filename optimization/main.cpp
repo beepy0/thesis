@@ -191,7 +191,7 @@ int main() {
     I1 = Random_Generate(5);
     I2 = Random_Generate(7);
     fagms_eh3[i] = new Xi_EH3(I1, I2);
-    fagms_h3[i] = new Xi_H3(1333337u, 32u, truncation_mask,
+    fagms_h3[i] = new Xi_H3B(1333337u, 32u, truncation_mask,
                                 floor_offset, floor_value);
   }
 
