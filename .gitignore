@@ -12,8 +12,8 @@
 !/tmp/.keep
 
 # Ignore tmp-local-build files
-cmake-build-debug/*
+optimization/cmake-build-debug/*
 
 # Ignore Intellij Project metadata
+optimization/.idea/*
 .idea/*
-optimization/*
