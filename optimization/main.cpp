@@ -11,6 +11,7 @@
 #include <string>
 #include <chrono>  // for high_resolution_clock
 #include <cmath>
+#include <simdpp/simd.h>
 
 
 using namespace std;

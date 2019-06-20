@@ -17,3 +17,6 @@ optimization/cmake-build-debug/*
 # Ignore Intellij Project metadata
 optimization/.idea/*
 .idea/*
+
+# libsimdpp source folder
+optimization/libsimdpp-master/*
