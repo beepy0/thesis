@@ -19,4 +19,4 @@ optimization/.idea/*
 .idea/*
 
 # libsimdpp source folder
-optimization/libsimdpp-master/*
+optimization/libs/*
