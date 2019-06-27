@@ -12,7 +12,7 @@
 #include <chrono>  // for high_resolution_clock
 #include <cmath>
 #include <thread>
-//#include <simdpp/simd.h>
+#include <simdpp/simd.h>
 #include "utils/helpers.h"
 
 
