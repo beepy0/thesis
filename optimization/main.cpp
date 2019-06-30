@@ -22,12 +22,12 @@ using namespace std;
 int main() {
 
   unsigned int i;
-  const unsigned int buckets_no = 129;
+  const unsigned int buckets_no = 128;
   const unsigned int truncation_mask = computeTruncationMask(buckets_no);
   auto floor_offset = (unsigned int)floor(log2(buckets_no));
   auto floor_value = (unsigned int)pow(2, floor_offset);
-  const unsigned int rows_no = 129;
-  const int tuples_no = 1000000;
+  const unsigned int rows_no = 128;
+  const int tuples_no = 100000;
   unsigned int data[tuples_no] = {0};
 
   loadData(data);
@@ -70,8 +70,8 @@ int main() {
   Sketch *fagms1 = new FAGMS_Sketch(buckets_no, rows_no,
                                     fagms_h3, fagms_eh3);
 
-//  timeSketchUpdate(agms1, data, tuples_no, "AGMS");
-  timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGM`S");
+  timeSketchUpdate(agms1, data, tuples_no, "AGMS");
+//  timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGM`S");
 
   // multiple run avg time testing
 //  int runs = 1;
