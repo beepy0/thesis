@@ -36,18 +36,33 @@ void timeSketchUpdate(Sketch *agms1, unsigned int data[],
 {
 //  cout << endl << "updating " << sketch_type <<
 //       " sketch with stream data..." << endl;
-//  //update the sketches for relation
-//  auto start_agms = std::chrono::high_resolution_clock::now();
+  //update the sketches for relation
+  auto start_agms = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < tuples_no; i++)
   {
     agms1->Update_Sketch(data[i], 1.0);
   }
-//  auto finish_agms = std::chrono::high_resolution_clock::now();
-//  std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
-//  double final_time_agms = elapsed_agms.count();
-//  printf("done. %s with %u size: %f \n\n", sketch_type.c_str(),
-//         tuples_no,
-//         final_time_agms);
+  auto finish_agms = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
+  double final_time_agms = elapsed_agms.count();
+  printf("done. %s with %u size: %f \n\n", sketch_type.c_str(),
+         tuples_no,
+         final_time_agms);
+}
+
+double getTimedSketchUpdate(Sketch *agms1, unsigned int data[],
+                            const int tuples_no)
+{
+  //update the sketches for relation
+  auto start_agms = std::chrono::high_resolution_clock::now();
+  for (int i = 0; i < tuples_no; i++)
+  {
+    agms1->Update_Sketch(data[i], 1.0);
+  }
+  auto finish_agms = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
+  double final_time_agms = elapsed_agms.count();
+  return final_time_agms;
 }
 
 void computeManualFrequencyVector(const unsigned int data[],
