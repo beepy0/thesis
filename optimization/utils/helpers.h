@@ -17,7 +17,7 @@ unsigned int Random_Generate(unsigned int seed)
 void loadData(unsigned int dataArray[]) {
   int i = 0;
 
-  std::ifstream fileStream ("data/zipf_stream_data_100k.csv");
+  std::ifstream fileStream ("data/uniform_whole_range_1M.csv");
 
   if(fileStream.is_open())
   {
@@ -29,6 +29,20 @@ void loadData(unsigned int dataArray[]) {
     }
     fileStream.close();
   }
+}
+
+void storeLogs(float *logsArray, int arr_size, const string &filename){
+  ofstream myfile(filename.c_str());
+  if(myfile.is_open())
+  {
+    for(int i = 0; i < arr_size - 1 ; i++)
+    {
+      myfile << logsArray[i] << ", ";
+    }
+    myfile << logsArray[arr_size-1];
+    myfile.close();
+  }
+  else cout << "Unable to open file." << endl;
 }
 
 void timeSketchUpdate(Sketch *agms1, unsigned int data[],
@@ -48,6 +62,17 @@ void timeSketchUpdate(Sketch *agms1, unsigned int data[],
   printf("done. %s with %u size: %f \n\n", sketch_type.c_str(),
          tuples_no,
          final_time_agms);
+}
+
+void capAccuracy(float *logs_arr, int runs,
+                 int c, int r, float estimate_accuracy)
+{
+  if(estimate_accuracy > 1.0)
+  {
+    logs_arr[(c*runs)+r] = 2 - estimate_accuracy;
+  } else {
+    logs_arr[(c*runs)+r] = estimate_accuracy;
+  }
 }
 
 double getTimedSketchUpdate(Sketch *agms1, unsigned int data[],
