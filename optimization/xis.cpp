@@ -69,7 +69,7 @@ Xi_H3B::Xi_H3B(const unsigned int seed,
   for( int i = 0; i < 32; i++)
   {
     q_matrix[i] = seed + offset;
-    offset += 500;
+    offset += (unsigned int)rand();
   }
 }
 

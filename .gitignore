@@ -19,4 +19,9 @@ optimization/.idea/*
 .idea/*
 
 # libsimdpp source folder
-optimization/libsimdpp-master/*
+optimization/libs/*
+
+# large data samples
+optimization/data/normal_stream_data_100M.csv
+optimization/data/uniform_whole_range_100M.csv
+optimization/data/zipf_stream_data_100M.csv
