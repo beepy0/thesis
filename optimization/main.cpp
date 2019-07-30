@@ -20,11 +20,16 @@
 using namespace std;
 using namespace simdpp;
 
+
+const unsigned int chunk_size = 1048576;
+SIMDPP_ALIGN(chunk_size*4) static unsigned int data[chunk_size];
+
 int main() {
 
-  const unsigned int tuples_no = 131072;
+  const unsigned int tuples_no = 1048576;
   auto* data_heap = new unsigned int[tuples_no];
   loadData(data_heap);
+  std::copy(data_heap, data_heap + chunk_size, data);
 
   //current implementation doesn't support computing
   //the real frequency vector with 100M size
@@ -37,10 +42,6 @@ int main() {
       computeManualSelfJoinSize(freq_vector, tuples_no);
   cout << "Real join size computation is: " << manual_join_size << endl;
 
-
-  const unsigned int chunk_size = 131072;
-  SIMDPP_ALIGN(chunk_size*4) unsigned int data[chunk_size];
-  std::copy(data_heap, data_heap + chunk_size, data);
 
   const int cases = 1;
 
@@ -93,7 +94,7 @@ int main() {
                                         fagms_h3, fagms_eh3);
 
 //    timeSketchUpdate(agms1, data, tuples_no, "AGMS");
-  timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
+      timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
 
 //      double time_agms = getTimedSketchUpdate(agms1, data, tuples_no);
 //      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
