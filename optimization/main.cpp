@@ -31,30 +31,18 @@ int main() {
 
   unsigned int freq_vector[tuples_no] = {0};
   computeManualFrequencyVector(data, freq_vector, tuples_no);
-//  printFrequencies(freq_vector, tuples_no);
+  printFrequencies(freq_vector, tuples_no);
   long long manual_join_size =
       computeManualSelfJoinSize(freq_vector, tuples_no);
-//  cout << "Real join size computation is: " << manual_join_size << endl;
+  cout << "Real join size computation is: " << manual_join_size << endl;
 
 
-  const int cases = 13;
+  const int cases = 1;
 
   const unsigned int cases_arr[2*cases] = {
-                                           256u, 256u,
-                                           128u, 256u,
                                            128u, 128u,
-                                           96u, 128u,
-                                           96u, 96u,
-                                           64u, 96u,
-                                           64u, 64u,
-                                           34u, 64u,
-                                           32u, 32u,
-                                           16u, 32u,
-                                           16u, 16u,
-                                           8u, 16u,
-                                           8u, 8u
                                            };
-  const int runs = 32;
+  const int runs = 1;
   auto *logs1 = new float[cases*runs]{};
   auto *logs2 = new float[cases*runs]{};
 
@@ -95,19 +83,19 @@ int main() {
                                         fagms_h3, fagms_eh3);
 
 //    timeSketchUpdate(agms1, data, tuples_no, "AGMS");
-//  timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
+  timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
 
-      double time_agms = getTimedSketchUpdate(agms1, data, tuples_no);
-      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
+//      double time_agms = getTimedSketchUpdate(agms1, data, tuples_no);
+//      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
 //      double time_fagms = getTimedSketchUpdate(fagms1, data, tuples_no);
 //      logs1[(c*runs)+r] = (tuples_no / time_fagms) * 32 / 1000000;
 
       //compute the sketch estimate
 //    double agms_est = agms1->Self_Join_Size();
-//      auto fagms_est = fagms1->Self_Join_Size();
+      auto fagms_est = fagms1->Self_Join_Size();
 
-      capAccuracy(logs2, runs,
-                  c, r, agms1->Self_Join_Size() / (double)manual_join_size);
+//      capAccuracy(logs2, runs,
+//                  c, r, agms1->Self_Join_Size() / (double)manual_join_size);
 //      capAccuracy(logs2, runs,
 //                  c, r, fagms1->Self_Join_Size() / (double)manual_join_size);
 
@@ -128,20 +116,12 @@ int main() {
       delete fagms1;
 
 //  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
-//      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
+      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
     }
   }
 
-//  for(int i = 0; i < cases*runs; i++){
-//    cout << logs1[i] << " ";
-//  }
-//  cout << endl;
-//  for(int i = 0; i < cases*runs; i++){
-//    cout << logs2[i] << " ";
-//  }
-
-  storeLogs(logs1, cases*runs, "agms_uniform_throughput.txt");
-  storeLogs(logs2, cases*runs, "agms_uniform_accuracy.txt");
+//  storeLogs(logs1, cases*runs, "agms_uniform_throughput.txt");
+//  storeLogs(logs2, cases*runs, "agms_uniform_accuracy.txt");
 
   delete[] logs1;
   delete[] logs2;
