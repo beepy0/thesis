@@ -1,3 +1,4 @@
+#define SIMDPP_ARCH_X86_AVX2
 #include <iostream>
 #include <algorithm> // for sorting
 #include "xis.h"
@@ -17,11 +18,11 @@
 
 
 using namespace std;
-
+using namespace simdpp;
 
 int main() {
 
-  const int tuples_no = 100000;
+  const unsigned int tuples_no = 131072;
   auto* data_heap = new unsigned int[tuples_no];
   loadData(data_heap);
 
@@ -36,8 +37,9 @@ int main() {
       computeManualSelfJoinSize(freq_vector, tuples_no);
   cout << "Real join size computation is: " << manual_join_size << endl;
 
-  int chunk_size = 100000;
-  unsigned int data[chunk_size];
+
+  const unsigned int chunk_size = 131072;
+  SIMDPP_ALIGN(chunk_size*4) unsigned int data[chunk_size];
   std::copy(data_heap, data_heap + chunk_size, data);
 
   const int cases = 1;

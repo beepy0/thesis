@@ -22,6 +22,9 @@ optimization/.idea/*
 optimization/libs/*
 
 # large data samples
-optimization/data/normal_stream_data_100M.csv
-optimization/data/uniform_whole_range_100M.csv
-optimization/data/zipf_stream_data_100M.csv
+optimization/data/rounded/normal_stream_data_100M.csv
+optimization/data/rounded/uniform_whole_range_100M.csv
+optimization/data/rounded/zipf_stream_data_100M.csv
+optimization/data/two_s/normal_stream_data_100M_2s.csv
+optimization/data/two_s/uniform_whole_range_100M_2s.csv
+optimization/data/two_s/zipf_stream_data_100M_2s.csv
