@@ -26,7 +26,7 @@ class Sketch
     virtual void Clear_Sketch() = 0;
 
     //updating the sketch with the value corresponding to the given key
-    virtual void Update_Sketch(unsigned int key, double func) = 0;
+    virtual void Update_Sketch(unsigned int key, int func) = 0;
 
     //estimating the size of join of two sketches; the second sketch is passed in as s1
     virtual double Size_Of_Join(Sketch *s1) = 0;
@@ -60,7 +60,7 @@ class AGMS_Sketch : public Sketch
 
     void Clear_Sketch() override;
 
-    void Update_Sketch(unsigned int key, double func) override;
+    void Update_Sketch(unsigned int key, int func) override;
 
     double Size_Of_Join(Sketch *s1) override;
 
@@ -93,7 +93,7 @@ class FAGMS_Sketch : public Sketch
 
     void Clear_Sketch() override;
 
-    void Update_Sketch(unsigned int key, double func) override;
+    void Update_Sketch(unsigned int key, int func) override;
 
     double Size_Of_Join(Sketch *s1) override;
 

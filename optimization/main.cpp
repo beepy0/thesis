@@ -21,7 +21,7 @@ using namespace std;
 
 int main() {
 
-  const int tuples_no = 1000000;
+  const int tuples_no = 100000;
   auto* data = new unsigned int[tuples_no];
   loadData(data);
 
@@ -55,13 +55,16 @@ int main() {
     auto floor_value = (unsigned int)pow(2, floor_offset);
     unsigned int I1, I2;
 
+    I1 = Random_Generate(5);
+    I2 = Random_Generate(7);
+
     for(int r = 0; r < runs; r++) {
       //generate the pseudo-random numbers for AGMS sketches; use EH3
       auto **agms_eh3 = new Xi*[buckets_no * rows_no];
       for (i = 0; i < buckets_no * rows_no; i++)
       {
-        I1 = Random_Generate((unsigned int)rand());
-        I2 = Random_Generate((unsigned int)rand());
+//        I1 = Random_Generate((unsigned int)rand());
+//        I2 = Random_Generate((unsigned int)rand());
         agms_eh3[i] = new Xi_EH3(I1, I2);
       }
 
@@ -70,10 +73,12 @@ int main() {
       auto **fagms_h3 = new Xi*[rows_no];
       for (i = 0; i < rows_no; i++)
       {
-        I1 = Random_Generate((unsigned int)rand());
-        I2 = Random_Generate((unsigned int)rand());
+//        I1 = Random_Generate((unsigned int)rand());
+//        I2 = Random_Generate((unsigned int)rand());
         fagms_eh3[i] = new Xi_EH3(I1, I2);
-        fagms_h3[i] = new Xi_H3B((unsigned int)rand(), 32u, truncation_mask,
+//        fagms_h3[i] = new Xi_H3B((unsigned int)rand(), 32u, truncation_mask,
+//                                 floor_offset, floor_value);
+        fagms_h3[i] = new Xi_H3B(1333337u, 32u, truncation_mask,
                                  floor_offset, floor_value);
       }
 

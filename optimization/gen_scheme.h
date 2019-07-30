@@ -3,6 +3,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 
 
 /*
@@ -44,6 +45,7 @@ inline unsigned int EH3(unsigned int i0, unsigned int I1, unsigned int j)
   unsigned int p_res = (I1&j) ^ (j & (j<<1u) & mask);
 
   unsigned int res = (((i0 ^ seq_xor(p_res)) & 1u) == 1u) ? 1u : -1u;
+
   return res;
 }
 

@@ -108,7 +108,7 @@ void AGMS_Sketch::Clear_Sketch()
 }
 
 
-void AGMS_Sketch::Update_Sketch(unsigned int key, double func)
+void AGMS_Sketch::Update_Sketch(unsigned int key, int func)
 {
   for (int i = 0; i < int(rows_no * cols_no); i++)
     sketch_elem[i] += (int)xi_pm1[i]->element(key) * func;
@@ -195,7 +195,7 @@ void FAGMS_Sketch::Clear_Sketch()
 }
 
 
-void FAGMS_Sketch::Update_Sketch(unsigned int key, double func)
+void FAGMS_Sketch::Update_Sketch(unsigned int key, int func)
 {
   for (int i = 0; i < (int)rows_no; i++)
   {

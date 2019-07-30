@@ -17,7 +17,7 @@ unsigned int Random_Generate(unsigned int seed)
 void loadData(unsigned int dataArray[]) {
   int i = 0;
 
-  std::ifstream fileStream ("data/zipf_stream_data_1000k.csv");
+  std::ifstream fileStream ("data/zipf_stream_data_100k.csv");
 
   if(fileStream.is_open())
   {
@@ -54,7 +54,7 @@ void timeSketchUpdate(Sketch *agms1, unsigned int data[],
   auto start_agms = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < tuples_no; i++)
   {
-    agms1->Update_Sketch(data[i], 1.0);
+    agms1->Update_Sketch(data[i], 1);
   }
   auto finish_agms = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
@@ -82,7 +82,7 @@ double getTimedSketchUpdate(Sketch *agms1, unsigned int data[],
   auto start_agms = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < tuples_no; i++)
   {
-    agms1->Update_Sketch(data[i], 1.0);
+    agms1->Update_Sketch(data[i], 1);
   }
   auto finish_agms = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
