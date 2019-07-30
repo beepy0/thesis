@@ -22,20 +22,23 @@ using namespace std;
 int main() {
 
   const int tuples_no = 100000;
-  auto* data = new unsigned int[tuples_no];
-  loadData(data);
+  auto* data_heap = new unsigned int[tuples_no];
+  loadData(data_heap);
 
   //current implementation doesn't support computing
   //the real frequency vector with 100M size
-//  sort(data, data + tuples_no);
-//
-//  unsigned int freq_vector[tuples_no] = {0};
-//  computeManualFrequencyVector(data, freq_vector, tuples_no);
-//  printFrequencies(freq_vector, tuples_no);
-//  long long manual_join_size =
-//      computeManualSelfJoinSize(freq_vector, tuples_no);
-//  cout << "Real join size computation is: " << manual_join_size << endl;
+  sort(data_heap, data_heap + tuples_no);
 
+  unsigned int freq_vector[tuples_no] = {0};
+  computeManualFrequencyVector(data_heap, freq_vector, tuples_no);
+  printFrequencies(freq_vector, tuples_no);
+  long long manual_join_size =
+      computeManualSelfJoinSize(freq_vector, tuples_no);
+  cout << "Real join size computation is: " << manual_join_size << endl;
+
+  int chunk_size = 100000;
+  unsigned int data[chunk_size];
+  std::copy(data_heap, data_heap + chunk_size, data);
 
   const int cases = 1;
 
@@ -130,7 +133,7 @@ int main() {
 
   delete[] logs1;
   delete[] logs2;
-  delete[] data;
+  delete[] data_heap;
 
 
   return 0;
