@@ -49,7 +49,7 @@ class AGMS_Sketch : public Sketch
     unsigned int rows_no;
     unsigned int cols_no;
 
-    double *sketch_elem;
+    int *sketch_elem;
 
     Xi **xi_pm1;
 
@@ -81,7 +81,7 @@ class FAGMS_Sketch : public Sketch
     unsigned int buckets_no;
     unsigned int rows_no;
 
-    double *sketch_elem;
+    int *sketch_elem;
 
     Xi **xi_bucket;
     Xi **xi_pm1;

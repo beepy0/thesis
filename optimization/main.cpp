@@ -27,14 +27,14 @@ int main() {
 
   //current implementation doesn't support computing
   //the real frequency vector with 100M size
-  sort(data, data + tuples_no);
-
-  unsigned int freq_vector[tuples_no] = {0};
-  computeManualFrequencyVector(data, freq_vector, tuples_no);
-  printFrequencies(freq_vector, tuples_no);
-  long long manual_join_size =
-      computeManualSelfJoinSize(freq_vector, tuples_no);
-  cout << "Real join size computation is: " << manual_join_size << endl;
+//  sort(data, data + tuples_no);
+//
+//  unsigned int freq_vector[tuples_no] = {0};
+//  computeManualFrequencyVector(data, freq_vector, tuples_no);
+//  printFrequencies(freq_vector, tuples_no);
+//  long long manual_join_size =
+//      computeManualSelfJoinSize(freq_vector, tuples_no);
+//  cout << "Real join size computation is: " << manual_join_size << endl;
 
 
   const int cases = 1;

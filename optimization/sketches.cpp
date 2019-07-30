@@ -83,9 +83,9 @@ AGMS_Sketch::AGMS_Sketch(unsigned int cols_no, unsigned int rows_no, Xi **xi_pm1
 
   this->xi_pm1 = xi_pm1;
 
-  this->sketch_elem = new double[rows_no * cols_no];
+  this->sketch_elem = new int[rows_no * cols_no];
   for (int i = 0; i < int(rows_no * cols_no); i++)
-    this->sketch_elem[i] = 0.0;
+    this->sketch_elem[i] = 0;
 }
 
 
@@ -104,7 +104,7 @@ AGMS_Sketch::~AGMS_Sketch()
 void AGMS_Sketch::Clear_Sketch()
 {
   for (int i = 0; i < int(rows_no * cols_no); i++)
-    sketch_elem[i] = 0.0;
+    sketch_elem[i] = 0;
 }
 
 
@@ -119,7 +119,8 @@ double AGMS_Sketch::Size_Of_Join(Sketch *s1)
 {
   auto *basic_est = new double[rows_no * cols_no];
   for (int i = 0; i < int(rows_no * cols_no); i++)
-    basic_est[i] = sketch_elem[i] * ((AGMS_Sketch*)s1)->sketch_elem[i];
+    basic_est[i] = (double)sketch_elem[i] *
+        (double)(((AGMS_Sketch*)s1)->sketch_elem[i]);
 
   auto *avg_est = new double[rows_no];
   for (int i = 0; i < int(rows_no); i++)
@@ -138,7 +139,7 @@ double AGMS_Sketch::Self_Join_Size()
 {
   auto *basic_est = new double[rows_no * cols_no];
   for (int i = 0; i < int(rows_no * cols_no); i++)
-    basic_est[i] = sketch_elem[i] * sketch_elem[i];
+    basic_est[i] = (double)sketch_elem[i] * (double)sketch_elem[i];
 
   auto *avg_est = new double[rows_no];
   for (int i = 0; i < int(rows_no); i++)
@@ -169,9 +170,9 @@ FAGMS_Sketch::FAGMS_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **x
   this->xi_bucket = xi_bucket;
   this->xi_pm1 = xi_pm1;
 
-  this->sketch_elem = new double[buckets_no * rows_no];
+  this->sketch_elem = new int[buckets_no * rows_no];
   for (int i = 0; i < int(buckets_no * rows_no); i++)
-    this->sketch_elem[i] = 0.0;
+    this->sketch_elem[i] = 0;
 }
 
 
@@ -191,7 +192,7 @@ FAGMS_Sketch::~FAGMS_Sketch()
 void FAGMS_Sketch::Clear_Sketch()
 {
   for (int i = 0; i < (int)(buckets_no * rows_no); i++)
-    sketch_elem[i] = 0.0;
+    sketch_elem[i] = 0;
 }
 
 
@@ -212,7 +213,8 @@ double FAGMS_Sketch::Size_Of_Join(Sketch *s1)
   {
     basic_est[i] = 0.0;
     for (int j = 0; j < (int)buckets_no; j++)
-      basic_est[i] = basic_est[i] + sketch_elem[i * buckets_no + j] * ((FAGMS_Sketch*)s1)->sketch_elem[i * buckets_no + j];
+      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
+                (double)(((FAGMS_Sketch*)s1)->sketch_elem[i * buckets_no + j]);
   }
 
   double result = Median(basic_est, rows_no);
@@ -230,7 +232,8 @@ double FAGMS_Sketch::Self_Join_Size()
   {
     basic_est[i] = 0.0;
     for (int j = 0; j < int(buckets_no); j++)
-      basic_est[i] = basic_est[i] + sketch_elem[i * buckets_no + j] * sketch_elem[i * buckets_no + j];
+      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
+                      (double)sketch_elem[i * buckets_no + j];
   }
 
   double result = Median(basic_est, rows_no);
