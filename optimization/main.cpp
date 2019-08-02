@@ -1,4 +1,3 @@
-#define SIMDPP_ARCH_X86_AVX2
 #include <iostream>
 #include <algorithm> // for sorting
 #include "xis.h"
@@ -13,6 +12,7 @@
 #include <chrono>  // for high_resolution_clock
 #include <cmath>
 #include <thread>
+#define SIMDPP_ARCH_X86_AVX2
 #include <simdpp/simd.h>
 #include "utils/helpers.h"
 
@@ -21,12 +21,12 @@ using namespace std;
 using namespace simdpp;
 
 
-const unsigned int chunk_size = 1048576;
+const unsigned int chunk_size = 131072;
 SIMDPP_ALIGN(chunk_size*4) static unsigned int data[chunk_size];
 
 int main() {
 
-  const unsigned int tuples_no = 1048576;
+  const unsigned int tuples_no = 131072;
   auto* data_heap = new unsigned int[tuples_no];
   loadData(data_heap);
   std::copy(data_heap, data_heap + chunk_size, data);
@@ -74,27 +74,27 @@ int main() {
         agms_eh3[i] = new Xi_EH3(I1, I2);
       }
 
-      //generate the pseudo-random numbers for FAGMS sketches; use EH3 and CW2B
-      auto **fagms_eh3 = new Xi*[rows_no];
-      auto **fagms_h3 = new Xi*[rows_no];
-      for (i = 0; i < rows_no; i++)
-      {
-//        I1 = Random_Generate((unsigned int)rand());
-//        I2 = Random_Generate((unsigned int)rand());
-        fagms_eh3[i] = new Xi_EH3(I1, I2);
-//        fagms_h3[i] = new Xi_H3B((unsigned int)rand(), 32u, truncation_mask,
+//      //generate the pseudo-random numbers for FAGMS sketches; use EH3 and CW2B
+//      auto **fagms_eh3 = new Xi*[rows_no];
+//      auto **fagms_h3 = new Xi*[rows_no];
+//      for (i = 0; i < rows_no; i++)
+//      {
+////        I1 = Random_Generate((unsigned int)rand());
+////        I2 = Random_Generate((unsigned int)rand());
+//        fagms_eh3[i] = new Xi_EH3(I1, I2);
+////        fagms_h3[i] = new Xi_H3B((unsigned int)rand(), 32u, truncation_mask,
+////                                 floor_offset, floor_value);
+//        fagms_h3[i] = new Xi_H3B(1333337u, 32u, truncation_mask,
 //                                 floor_offset, floor_value);
-        fagms_h3[i] = new Xi_H3B(1333337u, 32u, truncation_mask,
-                                 floor_offset, floor_value);
-      }
+//      }
 
       //build the sketches for each of the two relations
       Sketch *agms1 = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
-      Sketch *fagms1 = new FAGMS_Sketch(buckets_no, rows_no,
-                                        fagms_h3, fagms_eh3);
+//      Sketch *fagms1 = new FAGMS_Sketch(buckets_no, rows_no,
+//                                        fagms_h3, fagms_eh3);
 
-//    timeSketchUpdate(agms1, data, tuples_no, "AGMS");
-      timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
+    timeSketchUpdate(agms1, data, tuples_no, "AGMS");
+//      timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
 
 //      double time_agms = getTimedSketchUpdate(agms1, data, tuples_no);
 //      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
@@ -102,8 +102,8 @@ int main() {
 //      logs1[(c*runs)+r] = (tuples_no / time_fagms) * 32 / 1000000;
 
       //compute the sketch estimate
-//    double agms_est = agms1->Self_Join_Size();
-      auto fagms_est = fagms1->Self_Join_Size();
+    double agms_est = agms1->Self_Join_Size();
+//      auto fagms_est = fagms1->Self_Join_Size();
 
 //      capAccuracy(logs2, runs,
 //                  c, r, agms1->Self_Join_Size() / (double)manual_join_size);
@@ -115,19 +115,19 @@ int main() {
         delete agms_eh3[i];
       delete [] agms_eh3;
 
-      for (i = 0; i < rows_no; i++)
-      {
-        delete fagms_eh3[i];
-        delete fagms_h3[i];
-      }
-      delete [] fagms_eh3;
-      delete [] fagms_h3;
+//      for (i = 0; i < rows_no; i++)
+//      {
+//        delete fagms_eh3[i];
+//        delete fagms_h3[i];
+//      }
+//      delete [] fagms_eh3;
+//      delete [] fagms_h3;
 
       delete agms1;
-      delete fagms1;
+//      delete fagms1;
 
-//  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
-      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
+  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
+//      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
     }
   }
 

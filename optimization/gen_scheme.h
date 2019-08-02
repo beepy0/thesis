@@ -1,9 +1,15 @@
 #ifndef _SCHEME_GEN
 #define _SCHEME_GEN
 
+
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#define SIMDPP_ARCH_X86_AVX2
+#include <simdpp/simd.h>
+
+using namespace std;
+using namespace simdpp;
 
 
 /*
@@ -22,31 +28,49 @@
 /*
   Computes parity bit of the bits of an integer
 */
-inline unsigned int seq_xor(unsigned int x)
+inline uint32<8> seq_xor(uint32<8>& x)
 {
-  x ^= (x >> 16u);
-  x ^= (x >> 8u);
-  x ^= (x >> 4u);
-  x ^= (x >> 2u);
-  x ^= (x >> 1u);
+  x = x ^ (x >> 16u);
+  x = x ^ (x >> 8u);
+  x = x ^ (x >> 4u);
+  x = x ^ (x >> 2u);
+  x = x ^ (x >> 1u);
 
   return (x & 1u);
 }
 
 
-
+int cnt = 0;
 /*
   +-1 random variables
   3-wise independent schemes
 */
-inline unsigned int EH3(unsigned int i0, unsigned int I1, unsigned int j)
+inline int EH3(unsigned int i0, unsigned int I1, uint32<8>& js)
 {
   unsigned int mask = 0xAAAAAAAA;
-  unsigned int p_res = (I1&j) ^ (j & (j<<1u) & mask);
+  uint32<8> p_reses = (I1&js) ^ (js & (js<<1u) & mask);
 
-  unsigned int res = (((i0 ^ seq_xor(p_res)) & 1u) == 1u) ? 1u : -1u;
+
+  p_reses = ((i0 ^ seq_xor(p_reses)) & 1u);
+  p_reses = to_int32(p_reses);
+
+  SIMDPP_ALIGN(8*4) int res_tmp[8] = {0};
+  store(&res_tmp, p_reses);
+
+  for(int i = 0; i < 8; i++)
+  {
+    if(res_tmp[i] == 0)
+    {
+      res_tmp[i] = -1;
+    }
+  }
+
+
+  int32<8> res_simd = load(res_tmp);
+  int res = reduce_add(res_simd);
 
   return res;
+
 }
 
 

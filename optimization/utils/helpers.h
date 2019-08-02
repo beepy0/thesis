@@ -5,6 +5,10 @@
 #ifndef OPTIMIZATION_HELPERS_H
 #define OPTIMIZATION_HELPERS_H
 
+#define SIMDPP_ARCH_X86_AVX2
+#include <simdpp/simd.h>
+using namespace simdpp;
+
 unsigned int Random_Generate(unsigned int seed)
 {
   srand(seed);
@@ -17,7 +21,7 @@ unsigned int Random_Generate(unsigned int seed)
 void loadData(unsigned int dataArray[]) {
   int i = 0;
 
-  std::ifstream fileStream ("data/two_s/zipf_stream_data_1000k_2s.csv");
+  std::ifstream fileStream ("data/two_s/zipf_stream_data_100k_2s.csv");
 
   if(fileStream.is_open())
   {
@@ -52,9 +56,11 @@ void timeSketchUpdate(Sketch *agms1, unsigned int data[],
 //       " sketch with stream data..." << endl;
   //update the sketches for relation
   auto start_agms = std::chrono::high_resolution_clock::now();
-  for (int i = 0; i < tuples_no; i++)
+  // TODO SIMD separation
+  for (int i = 0; i < tuples_no; i+=8)
   {
-    agms1->Update_Sketch(data[i], 1);
+    uint32<8> simd_reg = load(data + i);
+    agms1->Update_Sketch(simd_reg, 1);
   }
   auto finish_agms = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
@@ -75,20 +81,20 @@ void capAccuracy(float *logs_arr, int runs,
   }
 }
 
-double getTimedSketchUpdate(Sketch *agms1, unsigned int data[],
-                            const int tuples_no)
-{
-  //update the sketches for relation
-  auto start_agms = std::chrono::high_resolution_clock::now();
-  for (int i = 0; i < tuples_no; i++)
-  {
-    agms1->Update_Sketch(data[i], 1);
-  }
-  auto finish_agms = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
-  double final_time_agms = elapsed_agms.count();
-  return final_time_agms;
-}
+//double getTimedSketchUpdate(Sketch *agms1, unsigned int data[],
+//                            const int tuples_no)
+//{
+//  //update the sketches for relation
+//  auto start_agms = std::chrono::high_resolution_clock::now();
+//  for (int i = 0; i < tuples_no; i++)
+//  {
+//    agms1->Update_Sketch(data[i], 1);
+//  }
+//  auto finish_agms = std::chrono::high_resolution_clock::now();
+//  std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
+//  double final_time_agms = elapsed_agms.count();
+//  return final_time_agms;
+//}
 
 void computeManualFrequencyVector(const unsigned int data[],
                                   unsigned int freq_vector[],

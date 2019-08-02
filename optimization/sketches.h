@@ -3,9 +3,11 @@
 
 
 #include "xis.h"
+#define SIMDPP_ARCH_X86_AVX2
+#include <simdpp/simd.h>
 
 using namespace std;
-
+using namespace simdpp;
 
 /*
 Generic interface for the sketches estimating size of joins and self-join sizes
@@ -26,7 +28,7 @@ class Sketch
     virtual void Clear_Sketch() = 0;
 
     //updating the sketch with the value corresponding to the given key
-    virtual void Update_Sketch(unsigned int key, int func) = 0;
+    virtual void Update_Sketch(uint32<8>& keys, int func) = 0;
 
     //estimating the size of join of two sketches; the second sketch is passed in as s1
     virtual double Size_Of_Join(Sketch *s1) = 0;
@@ -60,7 +62,7 @@ class AGMS_Sketch : public Sketch
 
     void Clear_Sketch() override;
 
-    void Update_Sketch(unsigned int key, int func) override;
+    void Update_Sketch(uint32<8>& keys, int func) override;
 
     double Size_Of_Join(Sketch *s1) override;
 
@@ -68,37 +70,37 @@ class AGMS_Sketch : public Sketch
 };
 
 
-
-/*
-Fast-AGMS sketches proposed in the paper:
-	1) "Sketching streams through the net: distributed approximate query tracking" by G. Cormode and M. Garofalakis
-rows_no basic estimators are computed by hashing the key values to an array with buckets_no elements. Then the median of the rows_no estimators is returned as the final estimator. sketch_elem is an array of rows_no * buckets_no counters. A key is initially hashed using the xi_bucket pseudo-random variable corresponding to the actual row, then the counter in that bucket is updated with the +/-1 random variable generated for the same key by xi_pm1 corresponding to the same row.
-*/
-
-class FAGMS_Sketch : public Sketch
-{
-  protected:
-    unsigned int buckets_no;
-    unsigned int rows_no;
-
-    int *sketch_elem;
-
-    Xi **xi_bucket;
-    Xi **xi_pm1;
-
-
-  public:
-    FAGMS_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket, Xi **xi_pm1);
-    ~FAGMS_Sketch() override;
-
-    void Clear_Sketch() override;
-
-    void Update_Sketch(unsigned int key, int func) override;
-
-    double Size_Of_Join(Sketch *s1) override;
-
-    double Self_Join_Size() override;
-};
+//
+///*
+//Fast-AGMS sketches proposed in the paper:
+//	1) "Sketching streams through the net: distributed approximate query tracking" by G. Cormode and M. Garofalakis
+//rows_no basic estimators are computed by hashing the key values to an array with buckets_no elements. Then the median of the rows_no estimators is returned as the final estimator. sketch_elem is an array of rows_no * buckets_no counters. A key is initially hashed using the xi_bucket pseudo-random variable corresponding to the actual row, then the counter in that bucket is updated with the +/-1 random variable generated for the same key by xi_pm1 corresponding to the same row.
+//*/
+//
+//class FAGMS_Sketch : public Sketch
+//{
+//  protected:
+//    unsigned int buckets_no;
+//    unsigned int rows_no;
+//
+//    int *sketch_elem;
+//
+//    Xi **xi_bucket;
+//    Xi **xi_pm1;
+//
+//
+//  public:
+//    FAGMS_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket, Xi **xi_pm1);
+//    ~FAGMS_Sketch() override;
+//
+//    void Clear_Sketch() override;
+//
+//    void Update_Sketch(unsigned int key, int func);
+//
+//    double Size_Of_Join(Sketch *s1) override;
+//
+//    double Self_Join_Size() override;
+//};
 
 
 #endif

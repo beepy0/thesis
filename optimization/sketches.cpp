@@ -2,11 +2,13 @@
 #include "xis.h"
 
 #include <cstring>
+#define SIMDPP_ARCH_X86_AVX2
+#include <simdpp/simd.h>
 
 
 
 using namespace std;
-
+using namespace simdpp;
 
 
 /*
@@ -108,10 +110,13 @@ void AGMS_Sketch::Clear_Sketch()
 }
 
 
-void AGMS_Sketch::Update_Sketch(unsigned int key, int func)
+void AGMS_Sketch::Update_Sketch(uint32<8>& keys, int func)
 {
-  for (int i = 0; i < int(rows_no * cols_no); i++)
-    sketch_elem[i] += (int)xi_pm1[i]->element(key) * func;
+  // TODO ignore loop overhead for now
+    for (int i = 0; i < int(rows_no * cols_no); i++)
+    {
+      sketch_elem[i] += (int)xi_pm1[i]->element(keys) * func;
+    }
 }
 
 
@@ -156,92 +161,92 @@ double AGMS_Sketch::Self_Join_Size()
 
 
 
-
-
-/*
-Fast-AGMS sketches
-*/
-
-FAGMS_Sketch::FAGMS_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket, Xi **xi_pm1)
-{
-  this->buckets_no = buckets_no;
-  this->rows_no = rows_no;
-
-  this->xi_bucket = xi_bucket;
-  this->xi_pm1 = xi_pm1;
-
-  this->sketch_elem = new int[buckets_no * rows_no];
-  for (int i = 0; i < int(buckets_no * rows_no); i++)
-    this->sketch_elem[i] = 0;
-}
-
-
-FAGMS_Sketch::~FAGMS_Sketch()
-{
-  buckets_no = 0;
-  rows_no = 0;
-
-  xi_bucket = nullptr;
-  xi_pm1 = nullptr;
-
-  delete [] sketch_elem;
-  sketch_elem = nullptr;
-}
-
-
-void FAGMS_Sketch::Clear_Sketch()
-{
-  for (int i = 0; i < (int)(buckets_no * rows_no); i++)
-    sketch_elem[i] = 0;
-}
-
-
-void FAGMS_Sketch::Update_Sketch(unsigned int key, int func)
-{
-  for (int i = 0; i < (int)rows_no; i++)
-  {
-    unsigned int bucket = xi_bucket[i]->element(key);
-    sketch_elem[i * buckets_no + bucket] += (int)xi_pm1[i]->element(key) * func;
-  }
-}
-
-
-double FAGMS_Sketch::Size_Of_Join(Sketch *s1)
-{
-  auto *basic_est = new double[rows_no];
-  for (int i = 0; i < (int)rows_no; i++)
-  {
-    basic_est[i] = 0.0;
-    for (int j = 0; j < (int)buckets_no; j++)
-      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
-                (double)(((FAGMS_Sketch*)s1)->sketch_elem[i * buckets_no + j]);
-  }
-
-  double result = Median(basic_est, rows_no);
-
-  delete [] basic_est;
-
-  return result;
-}
-
-
-double FAGMS_Sketch::Self_Join_Size()
-{
-  auto *basic_est = new double[rows_no];
-  for (int i = 0; i < (int)rows_no; i++)
-  {
-    basic_est[i] = 0.0;
-    for (int j = 0; j < int(buckets_no); j++)
-      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
-                      (double)sketch_elem[i * buckets_no + j];
-  }
-
-  double result = Median(basic_est, rows_no);
-
-  delete [] basic_est;
-
-  return result;
-}
-
-
+//
+//
+///*
+//Fast-AGMS sketches
+//*/
+//
+//FAGMS_Sketch::FAGMS_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket, Xi **xi_pm1)
+//{
+//  this->buckets_no = buckets_no;
+//  this->rows_no = rows_no;
+//
+//  this->xi_bucket = xi_bucket;
+//  this->xi_pm1 = xi_pm1;
+//
+//  this->sketch_elem = new int[buckets_no * rows_no];
+//  for (int i = 0; i < int(buckets_no * rows_no); i++)
+//    this->sketch_elem[i] = 0;
+//}
+//
+//
+//FAGMS_Sketch::~FAGMS_Sketch()
+//{
+//  buckets_no = 0;
+//  rows_no = 0;
+//
+//  xi_bucket = nullptr;
+//  xi_pm1 = nullptr;
+//
+//  delete [] sketch_elem;
+//  sketch_elem = nullptr;
+//}
+//
+//
+//void FAGMS_Sketch::Clear_Sketch()
+//{
+//  for (int i = 0; i < (int)(buckets_no * rows_no); i++)
+//    sketch_elem[i] = 0;
+//}
+//
+//
+//void FAGMS_Sketch::Update_Sketch(unsigned int key, int func)
+//{
+//  for (int i = 0; i < (int)rows_no; i++)
+//  {
+//    unsigned int bucket = xi_bucket[i]->element(key);
+//    sketch_elem[i * buckets_no + bucket] += (int)xi_pm1[i]->element(key) * func;
+//  }
+//}
+//
+//
+//double FAGMS_Sketch::Size_Of_Join(Sketch *s1)
+//{
+//  auto *basic_est = new double[rows_no];
+//  for (int i = 0; i < (int)rows_no; i++)
+//  {
+//    basic_est[i] = 0.0;
+//    for (int j = 0; j < (int)buckets_no; j++)
+//      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
+//                (double)(((FAGMS_Sketch*)s1)->sketch_elem[i * buckets_no + j]);
+//  }
+//
+//  double result = Median(basic_est, rows_no);
+//
+//  delete [] basic_est;
+//
+//  return result;
+//}
+//
+//
+//double FAGMS_Sketch::Self_Join_Size()
+//{
+//  auto *basic_est = new double[rows_no];
+//  for (int i = 0; i < (int)rows_no; i++)
+//  {
+//    basic_est[i] = 0.0;
+//    for (int j = 0; j < int(buckets_no); j++)
+//      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
+//                      (double)sketch_elem[i * buckets_no + j];
+//  }
+//
+//  double result = Median(basic_est, rows_no);
+//
+//  delete [] basic_est;
+//
+//  return result;
+//}
+//
+//
 
