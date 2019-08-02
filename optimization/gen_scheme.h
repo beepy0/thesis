@@ -40,7 +40,7 @@ inline uint32<8> seq_xor(uint32<8>& x)
 }
 
 
-int cnt = 0;
+
 /*
   +-1 random variables
   3-wise independent schemes
@@ -48,29 +48,15 @@ int cnt = 0;
 inline int EH3(unsigned int i0, unsigned int I1, uint32<8>& js)
 {
   unsigned int mask = 0xAAAAAAAA;
+
   uint32<8> p_reses = (I1&js) ^ (js & (js<<1u) & mask);
-
-
   p_reses = ((i0 ^ seq_xor(p_reses)) & 1u);
-  p_reses = to_int32(p_reses);
+  // SIMD alternative for ( == 1u) ? 1u : -1u;
+  p_reses = p_reses + ((p_reses ^ 1) * -1);
 
-  SIMDPP_ALIGN(8*4) int res_tmp[8] = {0};
-  store(&res_tmp, p_reses);
-
-  for(int i = 0; i < 8; i++)
-  {
-    if(res_tmp[i] == 0)
-    {
-      res_tmp[i] = -1;
-    }
-  }
-
-
-  int32<8> res_simd = load(res_tmp);
-  int res = reduce_add(res_simd);
+  int res = reduce_add(p_reses);
 
   return res;
-
 }
 
 
