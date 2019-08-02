@@ -21,7 +21,7 @@ unsigned int Random_Generate(unsigned int seed)
 void loadData(unsigned int dataArray[]) {
   int i = 0;
 
-  std::ifstream fileStream ("data/two_s/zipf_stream_data_100k_2s.csv");
+  std::ifstream fileStream ("data/two_s/zipf_stream_data_1000k_2s.csv");
 
   if(fileStream.is_open())
   {
@@ -49,23 +49,31 @@ void storeLogs(float *logsArray, int arr_size, const string &filename){
   else cout << "Unable to open file." << endl;
 }
 
-void timeSketchUpdate(Sketch *agms1, unsigned int data[],
-                      const int tuples_no, const string &sketch_type)
+void timeSketchUpdate(Sketch *sketch_type,
+                      const unsigned int chunk_size,
+                      const unsigned int tuples_no,
+                      unsigned int data_all[],
+                      unsigned int data_chunk[],
+                      const string &sketch_type_str)
 {
-//  cout << endl << "updating " << sketch_type <<
-//       " sketch with stream data..." << endl;
-  //update the sketches for relation
-  auto start_agms = std::chrono::high_resolution_clock::now();
-  // TODO SIMD separation
-  for (int i = 0; i < tuples_no; i+=8)
+  double final_time_agms = 0.0;
+  for (unsigned int j = 0; j < tuples_no / chunk_size; j++)
   {
-    uint32<8> simd_reg = load(data + i);
-    agms1->Update_Sketch(simd_reg, 1);
+    std::copy(data_all + (j*chunk_size),
+              data_all + (j*chunk_size) + chunk_size,
+              data_chunk);
+
+    auto start_agms = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < chunk_size; i+=8)
+    {
+      uint32<8> simd_reg = load(data_chunk + i);
+      sketch_type->Update_Sketch(simd_reg, 1);
+    }
+    auto finish_agms = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
+    final_time_agms+= elapsed_agms.count();
   }
-  auto finish_agms = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
-  double final_time_agms = elapsed_agms.count();
-  printf("done. %s with %u size: %f \n\n", sketch_type.c_str(),
+  printf("done. %s with %u size: %f \n\n", sketch_type_str.c_str(),
          tuples_no,
          final_time_agms);
 }
@@ -81,22 +89,34 @@ void capAccuracy(float *logs_arr, int runs,
   }
 }
 
-//double getTimedSketchUpdate(Sketch *agms1, unsigned int data[],
-//                            const int tuples_no)
-//{
-//  //update the sketches for relation
-//  auto start_agms = std::chrono::high_resolution_clock::now();
-//  for (int i = 0; i < tuples_no; i++)
-//  {
-//    agms1->Update_Sketch(data[i], 1);
-//  }
-//  auto finish_agms = std::chrono::high_resolution_clock::now();
-//  std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
-//  double final_time_agms = elapsed_agms.count();
-//  return final_time_agms;
-//}
+double getTimedSketchUpdate(Sketch *sketch_type,
+                            const unsigned int chunk_size,
+                            const unsigned int tuples_no,
+                            unsigned int data_all[],
+                            unsigned int data_chunk[])
+{
+  //update the sketches for relation
+  double final_time_agms = 0.0;
+  for (unsigned int j = 0; j < tuples_no / chunk_size; j++)
+  {
+    std::copy(data_all + (j * chunk_size),
+              data_all + (j * chunk_size) + chunk_size,
+              data_chunk);
 
-void computeManualFrequencyVector(const unsigned int data[],
+    auto start_agms = std::chrono::high_resolution_clock::now();
+    for (unsigned int i = 0; i < chunk_size; i+=8)
+    {
+      uint32<8> simd_reg = load(data_chunk + i);
+      sketch_type->Update_Sketch(simd_reg, 1);
+    }
+    auto finish_agms = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
+    final_time_agms += elapsed_agms.count();
+  }
+  return final_time_agms;
+}
+
+void computeManualFrequencyVector(const unsigned int data_chunk[],
                                   unsigned int freq_vector[],
                                   const int tuples_no)
 {
@@ -104,17 +124,17 @@ void computeManualFrequencyVector(const unsigned int data[],
   int freq_vector_index = 0;
   for(int i = 0; i < tuples_no; i++)
   {
-    if (data[i] == 0)
+    if (data_chunk[i] == 0)
     {
       continue;
     }
-    if(data[i] == current_value)
+    if(data_chunk[i] == current_value)
     {
       freq_vector[freq_vector_index] += 1;
     } else
     {
       freq_vector_index++;
-      current_value = data[i];
+      current_value = data_chunk[i];
       freq_vector[freq_vector_index] += 1;
     }
   }

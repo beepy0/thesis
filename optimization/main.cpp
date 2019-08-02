@@ -22,21 +22,21 @@ using namespace simdpp;
 
 
 const unsigned int chunk_size = 131072;
-SIMDPP_ALIGN(chunk_size*4) static unsigned int data[chunk_size];
+SIMDPP_ALIGN(chunk_size*4) static unsigned int data_chunk[chunk_size];
+const unsigned int tuples_no = 1048576;
+SIMDPP_ALIGN(tuples_no*4) static unsigned int data_all[tuples_no];
+
 
 int main() {
 
-  const unsigned int tuples_no = 131072;
-  auto* data_heap = new unsigned int[tuples_no];
-  loadData(data_heap);
-  std::copy(data_heap, data_heap + chunk_size, data);
+  loadData(data_all);
 
   //current implementation doesn't support computing
   //the real frequency vector with 100M size
-  sort(data_heap, data_heap + tuples_no);
+  sort(data_all, data_all + tuples_no);
 
   unsigned int freq_vector[tuples_no] = {0};
-  computeManualFrequencyVector(data_heap, freq_vector, tuples_no);
+  computeManualFrequencyVector(data_all, freq_vector, tuples_no);
   printFrequencies(freq_vector, tuples_no);
   long long manual_join_size =
       computeManualSelfJoinSize(freq_vector, tuples_no);
@@ -89,26 +89,27 @@ int main() {
 //      }
 
       //build the sketches for each of the two relations
-      Sketch *agms1 = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
-//      Sketch *fagms1 = new FAGMS_Sketch(buckets_no, rows_no,
+      Sketch *agms = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
+//      Sketch *fagms = new FAGMS_Sketch(buckets_no, rows_no,
 //                                        fagms_h3, fagms_eh3);
 
-    timeSketchUpdate(agms1, data, tuples_no, "AGMS");
-//      timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
+    timeSketchUpdate(agms, chunk_size, tuples_no, data_all, data_chunk, "AGMS");
+//      timeSketchUpdate(fagms, data_chunk, tuples_no, "Fast-AGMS");
 
-//      double time_agms = getTimedSketchUpdate(agms1, data, tuples_no);
+//      double time_agms = getTimedSketchUpdate(agms, chunk_size, tuples_no,
+//                                              data_all, data_chunk);
 //      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
-//      double time_fagms = getTimedSketchUpdate(fagms1, data, tuples_no);
+//      double time_fagms = getTimedSketchUpdate(fagms, data_chunk, tuples_no);
 //      logs1[(c*runs)+r] = (tuples_no / time_fagms) * 32 / 1000000;
 
       //compute the sketch estimate
-    double agms_est = agms1->Self_Join_Size();
-//      auto fagms_est = fagms1->Self_Join_Size();
+    double agms_est = agms->Self_Join_Size();
+//      auto fagms_est = fagms->Self_Join_Size();
 
 //      capAccuracy(logs2, runs,
-//                  c, r, agms1->Self_Join_Size() / (double)manual_join_size);
+//                  c, r, agms->Self_Join_Size() / (double)manual_join_size);
 //      capAccuracy(logs2, runs,
-//                  c, r, fagms1->Self_Join_Size() / (double)manual_join_size);
+//                  c, r, fagms->Self_Join_Size() / (double)manual_join_size);
 
       //clean-up everything
       for (i = 0; i < buckets_no * rows_no; i++)
@@ -123,21 +124,19 @@ int main() {
 //      delete [] fagms_eh3;
 //      delete [] fagms_h3;
 
-      delete agms1;
-//      delete fagms1;
+      delete agms;
+//      delete fagms;
 
   printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
 //      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
     }
   }
 
-//  storeLogs(logs1, cases*runs, "agms_uniform_throughput.txt");
+//  storeLogs(logs1, cases*runs, "agms_zipf_throughput.txt");
 //  storeLogs(logs2, cases*runs, "agms_uniform_accuracy.txt");
 
   delete[] logs1;
   delete[] logs2;
-  delete[] data_heap;
-
 
   return 0;
 }
