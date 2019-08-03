@@ -21,7 +21,7 @@ unsigned int Random_Generate(unsigned int seed)
 void loadData(unsigned int dataArray[]) {
   int i = 0;
 
-  std::ifstream fileStream ("data/two_s/zipf_stream_data_1000k_2s.csv");
+  std::ifstream fileStream ("data/two_s/zipf_stream_data_100k_2s.csv");
 
   if(fileStream.is_open())
   {

@@ -21,10 +21,11 @@ using namespace std;
 using namespace simdpp;
 
 
+const unsigned int tuples_no = 131072;
+static unsigned int data_all[tuples_no];
 const unsigned int chunk_size = 131072;
 SIMDPP_ALIGN(chunk_size*4) static unsigned int data_chunk[chunk_size];
-const unsigned int tuples_no = 1048576;
-SIMDPP_ALIGN(tuples_no*4) static unsigned int data_all[tuples_no];
+unsigned int freq_vector[tuples_no] = {0};
 
 
 int main() {
@@ -34,8 +35,6 @@ int main() {
   //current implementation doesn't support computing
   //the real frequency vector with 100M size
   sort(data_all, data_all + tuples_no);
-
-  unsigned int freq_vector[tuples_no] = {0};
   computeManualFrequencyVector(data_all, freq_vector, tuples_no);
   printFrequencies(freq_vector, tuples_no);
   long long manual_join_size =
