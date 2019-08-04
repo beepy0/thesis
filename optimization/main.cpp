@@ -15,17 +15,14 @@
 #define SIMDPP_ARCH_X86_AVX2
 #include <simdpp/simd.h>
 #include "utils/helpers.h"
-
+#include "common.h"
 
 using namespace std;
 using namespace simdpp;
 
-
-const unsigned int tuples_no = 131072;
 static unsigned int data_all[tuples_no];
-const unsigned int chunk_size = 131072;
 SIMDPP_ALIGN(chunk_size*4) static unsigned int data_chunk[chunk_size];
-unsigned int freq_vector[tuples_no] = {0};
+static unsigned int freq_vector[tuples_no] = {0};
 
 
 int main() {
@@ -42,12 +39,6 @@ int main() {
   cout << "Real join size computation is: " << manual_join_size << endl;
 
 
-  const int cases = 1;
-
-  const unsigned int cases_arr[2*cases] = {
-                                           128u, 128u,
-                                           };
-  const int runs = 1;
   auto *logs1 = new float[cases*runs]{};
   auto *logs2 = new float[cases*runs]{};
 
@@ -78,9 +69,7 @@ int main() {
         I1 = Random_Generate(i);
         I2 = Random_Generate(i);
         fagms_eh3[i] = new Xi_EH3(I1, I2);
-//        fagms_h3[i] = new Xi_H3B((unsigned int)rand(), 32u, truncation_mask,
-//                                 floor_offset, floor_value);
-        fagms_h3[i] = new Xi_H3B(1333337u, 32u, truncation_mask,
+        fagms_h3[i] = new Xi_H3B(Random_Generate(i+1), 32u, truncation_mask,
                                  floor_offset, floor_value);
       }
 

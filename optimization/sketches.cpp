@@ -110,7 +110,7 @@ void AGMS_Sketch::Clear_Sketch()
 }
 
 
-void AGMS_Sketch::Update_Sketch(uint32<8>& keys, int func)
+void AGMS_Sketch::Update_Sketch(uint32<register_size>& keys, int func)
 {
   // TODO ignore loop overhead for now
     for (int i = 0; i < int(rows_no * cols_no); i++)
@@ -202,17 +202,17 @@ void FAGMS_Sketch::Clear_Sketch()
 }
 
 
-void FAGMS_Sketch::Update_Sketch(uint32<8>& keys, int func)
+void FAGMS_Sketch::Update_Sketch(uint32<register_size>& keys, int func)
 {
   for (int i = 0; i < (int)rows_no; i++)
   {
-    int32<8> buckets_simd = xi_bucket[i]->b_element(keys);
-    SIMDPP_ALIGN(8*4) int buckets_arr[8];
+    int32<register_size> buckets_simd = xi_bucket[i]->b_element(keys);
+    SIMDPP_ALIGN(register_size*4) int buckets_arr[register_size];
     store(buckets_arr, buckets_simd);
-    int32<8> rows_simd = xi_pm1[i]->element(keys);
-    SIMDPP_ALIGN(8*4) int rows_arr[8];
+    int32<register_size> rows_simd = xi_pm1[i]->element(keys);
+    SIMDPP_ALIGN(register_size*4) int rows_arr[register_size];
     store(rows_arr, rows_simd);
-    for (int j = 0; j < 8; j++)
+    for (int j = 0; j < register_size; j++)
     {
       sketch_elem[i * buckets_no + buckets_arr[j]] += rows_arr[j] * func;
     }

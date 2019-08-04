@@ -5,6 +5,7 @@
 #define SIMDPP_ARCH_X86_AVX2
 #include <simdpp/simd.h>
 
+
 using namespace std;
 using namespace simdpp;
 
@@ -34,16 +35,16 @@ Xi_EH3::Xi_EH3(unsigned int I1, unsigned int I2)
 Xi_EH3::~Xi_EH3() = default;
 
 
-int32<8> Xi_EH3::element(uint32<8>& js)
+int32<register_size> Xi_EH3::element(uint32<register_size>& keys)
 {
   unsigned int i0 = seeds[0];
   unsigned int i1 = seeds[1];
-  return EH3(i0, i1, js);
+  return EH3(i0, i1, keys);
 }
 
-int32<8> Xi_EH3::b_element(uint32<8>& keys){
-  unsigned int arr[8] = {0u};
-  uint32<8> nothing = load(arr);
+int32<register_size> Xi_EH3::b_element(uint32<register_size>& keys){
+  unsigned int arr[register_size] = {0u};
+  uint32<register_size> nothing = load(arr);
   return nothing;
 }
 
@@ -74,9 +75,8 @@ Xi_H3B::Xi_H3B(const unsigned int seed,
   for( int i = 0; i < 32; i++)
   {
     q_matrix[i] = seed + offset;
-      srand((unsigned int)i);
+      srand((unsigned int)i+1);
     offset += (unsigned int)rand();
-//    offset += 500;
   }
 }
 
@@ -87,20 +87,20 @@ Xi_H3B::~Xi_H3B()
 }
 
 
-int32<8> Xi_H3B::b_element(uint32<8>& keys)
+int32<register_size> Xi_H3B::b_element(uint32<register_size>& keys)
 {
-  uint32<8> truncated_values = H3(keys, q_matrix, no_bits) & truncation_mask;
-  uint32<8> next_power_bits = truncated_values >> floor_offset;
-  uint32<8> results = (truncated_values - floor_value) * (next_power_bits & 1u)
+  uint32<register_size> truncated_values = H3(keys, q_matrix, no_bits) & truncation_mask;
+  uint32<register_size> next_power_bits = truncated_values >> floor_offset;
+  uint32<register_size> results = (truncated_values - floor_value) * (next_power_bits & 1u)
       + (truncated_values) * (next_power_bits ^ 1u);
 
   return results;
 }
 
-int32<8> Xi_H3B::element(uint32<8>& keys)
+int32<register_size> Xi_H3B::element(uint32<register_size>& keys)
 {
-  unsigned int arr[8] = {0u};
-  uint32<8> nothing = load(arr);
+  unsigned int arr[register_size] = {0u};
+  uint32<register_size> nothing = load(arr);
   return nothing;
 }
 

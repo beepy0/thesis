@@ -2,6 +2,7 @@
 #define _XIS
 #define SIMDPP_ARCH_X86_AVX2
 #include <simdpp/simd.h>
+#include "common.h"
 
 
 /*
@@ -22,8 +23,8 @@ using namespace simdpp;
 class Xi
 {
   public:
-    virtual int32<8> element(uint32<8>& js) = 0;
-    virtual int32<8> b_element(uint32<8>& keys) = 0;
+    virtual int32<register_size> element(uint32<register_size>& keys) = 0;
+    virtual int32<register_size> b_element(uint32<register_size>& keys) = 0;
 //    virtual double interval_sum(unsigned int alpha, unsigned int beta) = 0;
 
     virtual ~Xi();
@@ -43,8 +44,8 @@ class Xi_EH3 : public Xi
     Xi_EH3(unsigned int I1, unsigned int I2);
     ~Xi_EH3() override;
 
-    int32<8> element(uint32<8>& js) override;
-    int32<8> b_element(uint32<8>& keys) override;
+    int32<register_size> element(uint32<register_size>& keys) override;
+    int32<register_size> b_element(uint32<register_size>& keys) override;
 //    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
 
@@ -65,8 +66,8 @@ class Xi_H3B : public  Xi
           unsigned int floor_value);
     ~Xi_H3B() override;
 
-    int32<8> element(uint32<8>& keys) override;
-    int32<8> b_element(uint32<8>& keys) override;
+    int32<register_size> element(uint32<register_size>& keys) override;
+    int32<register_size> b_element(uint32<8>& keys) override;
 //    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
 

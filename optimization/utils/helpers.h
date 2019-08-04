@@ -7,6 +7,7 @@
 
 #define SIMDPP_ARCH_X86_AVX2
 #include <simdpp/simd.h>
+
 using namespace simdpp;
 
 unsigned int Random_Generate(unsigned int seed)
@@ -64,9 +65,9 @@ void timeSketchUpdate(Sketch *sketch_type,
               data_chunk);
 
     auto start_agms = std::chrono::high_resolution_clock::now();
-    for (unsigned int i = 0; i < chunk_size; i+=8)
+    for (unsigned int i = 0; i < chunk_size; i+=register_size)
     {
-      uint32<8> simd_reg = load(data_chunk + i);
+      uint32<register_size> simd_reg = load(data_chunk + i);
       sketch_type->Update_Sketch(simd_reg, 1);
     }
     auto finish_agms = std::chrono::high_resolution_clock::now();
@@ -104,9 +105,9 @@ double getTimedSketchUpdate(Sketch *sketch_type,
               data_chunk);
 
     auto start_agms = std::chrono::high_resolution_clock::now();
-    for (unsigned int i = 0; i < chunk_size; i+=8)
+    for (unsigned int i = 0; i < chunk_size; i+=register_size)
     {
-      uint32<8> simd_reg = load(data_chunk + i);
+      uint32<register_size> simd_reg = load(data_chunk + i);
       sketch_type->Update_Sketch(simd_reg, 1);
     }
     auto finish_agms = std::chrono::high_resolution_clock::now();
