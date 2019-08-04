@@ -5,8 +5,6 @@
 #define SIMDPP_ARCH_X86_AVX2
 #include <simdpp/simd.h>
 
-
-
 using namespace std;
 using namespace simdpp;
 
@@ -73,6 +71,7 @@ int Xi_EH3::element(uint32<8>& js)
 //  for( int i = 0; i < 32; i++)
 //  {
 //    q_matrix[i] = seed + offset;
+//      srand(i);
 ////    offset += (unsigned int)rand();
 //    offset += 500;
 //  }

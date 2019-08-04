@@ -115,7 +115,7 @@ void AGMS_Sketch::Update_Sketch(uint32<8>& keys, int func)
   // TODO ignore loop overhead for now
     for (int i = 0; i < int(rows_no * cols_no); i++)
     {
-      sketch_elem[i] += (int)xi_pm1[i]->element(keys) * func;
+      sketch_elem[i] += xi_pm1[i]->element(keys) * func;
     }
 }
 
