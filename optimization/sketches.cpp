@@ -115,7 +115,8 @@ void AGMS_Sketch::Update_Sketch(uint32<8>& keys, int func)
   // TODO ignore loop overhead for now
     for (int i = 0; i < int(rows_no * cols_no); i++)
     {
-      sketch_elem[i] += xi_pm1[i]->element(keys) * func;
+      int multiple_updates = reduce_add(xi_pm1[i]->element(keys));
+      sketch_elem[i] += multiple_updates * func;
     }
 }
 
@@ -161,92 +162,100 @@ double AGMS_Sketch::Self_Join_Size()
 
 
 
-//
-//
-///*
-//Fast-AGMS sketches
-//*/
-//
-//FAGMS_Sketch::FAGMS_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket, Xi **xi_pm1)
-//{
-//  this->buckets_no = buckets_no;
-//  this->rows_no = rows_no;
-//
-//  this->xi_bucket = xi_bucket;
-//  this->xi_pm1 = xi_pm1;
-//
-//  this->sketch_elem = new int[buckets_no * rows_no];
-//  for (int i = 0; i < int(buckets_no * rows_no); i++)
-//    this->sketch_elem[i] = 0;
-//}
-//
-//
-//FAGMS_Sketch::~FAGMS_Sketch()
-//{
-//  buckets_no = 0;
-//  rows_no = 0;
-//
-//  xi_bucket = nullptr;
-//  xi_pm1 = nullptr;
-//
-//  delete [] sketch_elem;
-//  sketch_elem = nullptr;
-//}
-//
-//
-//void FAGMS_Sketch::Clear_Sketch()
-//{
-//  for (int i = 0; i < (int)(buckets_no * rows_no); i++)
-//    sketch_elem[i] = 0;
-//}
-//
-//
-//void FAGMS_Sketch::Update_Sketch(unsigned int key, int func)
-//{
-//  for (int i = 0; i < (int)rows_no; i++)
-//  {
-//    unsigned int bucket = xi_bucket[i]->element(key);
-//    sketch_elem[i * buckets_no + bucket] += (int)xi_pm1[i]->element(key) * func;
-//  }
-//}
-//
-//
-//double FAGMS_Sketch::Size_Of_Join(Sketch *s1)
-//{
-//  auto *basic_est = new double[rows_no];
-//  for (int i = 0; i < (int)rows_no; i++)
-//  {
-//    basic_est[i] = 0.0;
-//    for (int j = 0; j < (int)buckets_no; j++)
-//      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
-//                (double)(((FAGMS_Sketch*)s1)->sketch_elem[i * buckets_no + j]);
-//  }
-//
-//  double result = Median(basic_est, rows_no);
-//
-//  delete [] basic_est;
-//
-//  return result;
-//}
-//
-//
-//double FAGMS_Sketch::Self_Join_Size()
-//{
-//  auto *basic_est = new double[rows_no];
-//  for (int i = 0; i < (int)rows_no; i++)
-//  {
-//    basic_est[i] = 0.0;
-//    for (int j = 0; j < int(buckets_no); j++)
-//      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
-//                      (double)sketch_elem[i * buckets_no + j];
-//  }
-//
-//  double result = Median(basic_est, rows_no);
-//
-//  delete [] basic_est;
-//
-//  return result;
-//}
-//
-//
+
+
+/*
+Fast-AGMS sketches
+*/
+
+FAGMS_Sketch::FAGMS_Sketch(unsigned int buckets_no, unsigned int rows_no, Xi **xi_bucket, Xi **xi_pm1)
+{
+  this->buckets_no = buckets_no;
+  this->rows_no = rows_no;
+
+  this->xi_bucket = xi_bucket;
+  this->xi_pm1 = xi_pm1;
+
+  this->sketch_elem = new int[buckets_no * rows_no];
+  for (int i = 0; i < int(buckets_no * rows_no); i++)
+    this->sketch_elem[i] = 0;
+}
+
+
+FAGMS_Sketch::~FAGMS_Sketch()
+{
+  buckets_no = 0;
+  rows_no = 0;
+
+  xi_bucket = nullptr;
+  xi_pm1 = nullptr;
+
+  delete [] sketch_elem;
+  sketch_elem = nullptr;
+}
+
+
+void FAGMS_Sketch::Clear_Sketch()
+{
+  for (int i = 0; i < (int)(buckets_no * rows_no); i++)
+    sketch_elem[i] = 0;
+}
+
+
+void FAGMS_Sketch::Update_Sketch(uint32<8>& keys, int func)
+{
+  for (int i = 0; i < (int)rows_no; i++)
+  {
+    int32<8> buckets_simd = xi_bucket[i]->b_element(keys);
+    SIMDPP_ALIGN(8*4) int buckets_arr[8];
+    store(buckets_arr, buckets_simd);
+    int32<8> rows_simd = xi_pm1[i]->element(keys);
+    SIMDPP_ALIGN(8*4) int rows_arr[8];
+    store(rows_arr, rows_simd);
+    for (int j = 0; j < 8; j++)
+    {
+      sketch_elem[i * buckets_no + buckets_arr[j]] += rows_arr[j] * func;
+    }
+  }
+}
+
+
+double FAGMS_Sketch::Size_Of_Join(Sketch *s1)
+{
+  auto *basic_est = new double[rows_no];
+  for (int i = 0; i < (int)rows_no; i++)
+  {
+    basic_est[i] = 0.0;
+    for (int j = 0; j < (int)buckets_no; j++)
+      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
+                (double)(((FAGMS_Sketch*)s1)->sketch_elem[i * buckets_no + j]);
+  }
+
+  double result = Median(basic_est, rows_no);
+
+  delete [] basic_est;
+
+  return result;
+}
+
+
+double FAGMS_Sketch::Self_Join_Size()
+{
+  auto *basic_est = new double[rows_no];
+  for (int i = 0; i < (int)rows_no; i++)
+  {
+    basic_est[i] = 0.0;
+    for (int j = 0; j < int(buckets_no); j++)
+      basic_est[i] += (double)sketch_elem[i * buckets_no + j] *
+                      (double)sketch_elem[i * buckets_no + j];
+  }
+
+  double result = Median(basic_est, rows_no);
+
+  delete [] basic_est;
+
+  return result;
+}
+
+
 

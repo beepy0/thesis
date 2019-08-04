@@ -45,7 +45,7 @@ inline uint32<8> seq_xor(uint32<8>& x)
   +-1 random variables
   3-wise independent schemes
 */
-inline int EH3(unsigned int i0, unsigned int I1, uint32<8>& js)
+inline int32<8> EH3(unsigned int i0, unsigned int I1, uint32<8>& js)
 {
   unsigned int mask = 0xAAAAAAAA;
 
@@ -54,9 +54,7 @@ inline int EH3(unsigned int i0, unsigned int I1, uint32<8>& js)
   // SIMD alternative for ( == 1u) ? 1u : -1u;
   p_reses = p_reses + ((p_reses ^ 1) * -1);
 
-  int res = reduce_add(p_reses);
-
-  return res;
+  return p_reses;
 }
 
 
@@ -66,17 +64,18 @@ inline int EH3(unsigned int i0, unsigned int I1, uint32<8>& js)
   b-valued random variables
   3-wise H3 scheme
 */
-inline unsigned int H3(unsigned int key,
+inline uint32<8> H3(uint32<8> keys,
                        const unsigned int *q_matrix,
                        const unsigned int no_bits)
 {
-  unsigned int res = 0u;
+  SIMDPP_ALIGN(8*4) unsigned int reses[8] = {0u};
+  uint32<8> reses_simd = load(reses);
   for( unsigned int i = 0; i < no_bits; i++ )
   {
-    res ^= q_matrix[i] * ((key >> i) & 1u);
+    reses_simd = reses_simd ^ (q_matrix[i] * ((keys >> i) & 1u));
   }
 
-  return res;
+  return reses_simd;
 }
 
 #endif

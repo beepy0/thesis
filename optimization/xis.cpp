@@ -34,15 +34,18 @@ Xi_EH3::Xi_EH3(unsigned int I1, unsigned int I2)
 Xi_EH3::~Xi_EH3() = default;
 
 
-int Xi_EH3::element(uint32<8>& js)
+int32<8> Xi_EH3::element(uint32<8>& js)
 {
   unsigned int i0 = seeds[0];
   unsigned int i1 = seeds[1];
-
-  int res = EH3(i0, i1, js);
-  return res;
+  return EH3(i0, i1, js);
 }
 
+int32<8> Xi_EH3::b_element(uint32<8>& keys){
+  unsigned int arr[8] = {0u};
+  uint32<8> nothing = load(arr);
+  return nothing;
+}
 
 //double Xi_EH3::interval_sum(unsigned int alpha, unsigned int beta)
 //{
@@ -54,47 +57,53 @@ int Xi_EH3::element(uint32<8>& js)
 //}
 
 
-//
-//Xi_H3B::Xi_H3B(const unsigned int seed,
-//             const unsigned int bits_count,
-//             const unsigned int mask,
-//             const unsigned int floor_size,
-//             const unsigned int floor_val)
-//{
-//  no_bits = bits_count;
-//  truncation_mask = mask;
-//  floor_offset = floor_size;
-//  floor_value = floor_val;
-//
-//  unsigned int offset = 0;
-//  q_matrix = (unsigned*)malloc(sizeof(unsigned) * no_bits);
-//  for( int i = 0; i < 32; i++)
-//  {
-//    q_matrix[i] = seed + offset;
-//      srand(i);
-////    offset += (unsigned int)rand();
+
+Xi_H3B::Xi_H3B(const unsigned int seed,
+             const unsigned int bits_count,
+             const unsigned int mask,
+             const unsigned int floor_size,
+             const unsigned int floor_val)
+{
+  no_bits = bits_count;
+  truncation_mask = mask;
+  floor_offset = floor_size;
+  floor_value = floor_val;
+
+  unsigned int offset = 0;
+  q_matrix = (unsigned*)malloc(sizeof(unsigned) * no_bits);
+  for( int i = 0; i < 32; i++)
+  {
+    q_matrix[i] = seed + offset;
+      srand((unsigned int)i);
+    offset += (unsigned int)rand();
 //    offset += 500;
-//  }
-//}
-//
-//
-//Xi_H3B::~Xi_H3B()
-//{
-//  free(q_matrix);
-//}
-//
-//
-//unsigned int Xi_H3B::element(unsigned int key)
-//{
-//  unsigned int truncated_value = H3(key, q_matrix, no_bits) & truncation_mask;
-//  const unsigned int next_power_bit = truncated_value >> floor_offset;
-//  unsigned int result = (truncated_value - floor_value) * (next_power_bit & 1u)
-//      + (truncated_value) * (next_power_bit ^ 1u);
-//
-//  return result;
-//}
-//
-//
+  }
+}
+
+
+Xi_H3B::~Xi_H3B()
+{
+  free(q_matrix);
+}
+
+
+int32<8> Xi_H3B::b_element(uint32<8>& keys)
+{
+  uint32<8> truncated_values = H3(keys, q_matrix, no_bits) & truncation_mask;
+  uint32<8> next_power_bits = truncated_values >> floor_offset;
+  uint32<8> results = (truncated_values - floor_value) * (next_power_bits & 1u)
+      + (truncated_values) * (next_power_bits ^ 1u);
+
+  return results;
+}
+
+int32<8> Xi_H3B::element(uint32<8>& keys)
+{
+  unsigned int arr[8] = {0u};
+  uint32<8> nothing = load(arr);
+  return nothing;
+}
+
 //double Xi_H3B::interval_sum(unsigned int alpha, unsigned int beta)
 //{
 //  return -1;
