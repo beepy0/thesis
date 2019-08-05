@@ -8,6 +8,8 @@
 #define SIMDPP_ARCH_X86_AVX2
 #include <simdpp/simd.h>
 
+const std::string data_samples_files = "data/two_s/zipf_stream_data_100k_2s.csv";
+
 const int register_size = 8;
 
 const unsigned int tuples_no = 131072;
