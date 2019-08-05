@@ -2,8 +2,7 @@
 #include "xis.h"
 
 #include <cstring>
-#define SIMDPP_ARCH_X86_AVX2
-#include <simdpp/simd.h>
+
 
 
 

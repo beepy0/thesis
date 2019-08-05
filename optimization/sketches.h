@@ -3,8 +3,6 @@
 
 
 #include "xis.h"
-#define SIMDPP_ARCH_X86_AVX2
-#include <simdpp/simd.h>
 #include "common.h"
 
 using namespace std;

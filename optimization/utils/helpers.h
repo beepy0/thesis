@@ -5,8 +5,6 @@
 #ifndef OPTIMIZATION_HELPERS_H
 #define OPTIMIZATION_HELPERS_H
 
-#define SIMDPP_ARCH_X86_AVX2
-#include <simdpp/simd.h>
 
 using namespace simdpp;
 

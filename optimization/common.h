@@ -5,6 +5,9 @@
 #ifndef OPTIMIZATION_COMMON_H
 #define OPTIMIZATION_COMMON_H
 
+#define SIMDPP_ARCH_X86_AVX2
+#include <simdpp/simd.h>
+
 const int register_size = 8;
 
 const unsigned int tuples_no = 131072;

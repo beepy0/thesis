@@ -2,8 +2,6 @@
 #include "xis.h"
 #include "range_sum.h"
 #include <iostream>
-#define SIMDPP_ARCH_X86_AVX2
-#include <simdpp/simd.h>
 
 
 using namespace std;
