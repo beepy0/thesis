@@ -112,11 +112,12 @@ void AGMS_Sketch::Clear_Sketch()
 void AGMS_Sketch::Update_Sketch(uint32<register_size>& keys, int func)
 {
   // TODO ignore loop overhead for now
-    for (int i = 0; i < int(rows_no * cols_no); i++)
-    {
-      int multiple_updates = reduce_add(xi_pm1[i]->element(keys));
-      sketch_elem[i] += multiple_updates * func;
-    }
+  prefetch_write(sketch_elem);
+  for (int i = 0; i < int(rows_no * cols_no); i++)
+  {
+    int multiple_updates = reduce_add(xi_pm1[i]->element(keys) * func);
+    sketch_elem[i] += multiple_updates;
+  }
 }
 
 
@@ -205,15 +206,19 @@ void FAGMS_Sketch::Update_Sketch(uint32<register_size>& keys, int func)
 {
   for (int i = 0; i < (int)rows_no; i++)
   {
-    int32<register_size> buckets_simd = xi_bucket[i]->b_element(keys);
+    int32<register_size> buckets_simd =
+        (i * buckets_no) + xi_bucket[i]->b_element(keys);
     SIMDPP_ALIGN(register_size*4) int buckets_arr[register_size];
     store(buckets_arr, buckets_simd);
-    int32<register_size> rows_simd = xi_pm1[i]->element(keys);
+
+    int32<register_size> rows_simd = xi_pm1[i]->element(keys) * func;
     SIMDPP_ALIGN(register_size*4) int rows_arr[register_size];
     store(rows_arr, rows_simd);
+
+    prefetch_write(sketch_elem);
     for (int j = 0; j < register_size; j++)
     {
-      sketch_elem[i * buckets_no + buckets_arr[j]] += rows_arr[j] * func;
+      sketch_elem[buckets_arr[j]] += rows_arr[j];
     }
   }
 }

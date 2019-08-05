@@ -46,14 +46,28 @@ inline uint32<register_size> seq_xor(uint32<register_size>& x)
   +-1 random variables
   3-wise independent schemes
 */
+int tmp_cnt = 0;
 inline int32<register_size> EH3(unsigned int i0, unsigned int I1, uint32<register_size>& keys)
 {
   unsigned int mask = 0xAAAAAAAA;
 
   uint32<register_size> p_reses = (I1&keys) ^ (keys & (keys<<1u) & mask);
-  p_reses = ((i0 ^ seq_xor(p_reses)) & 1u);
+  p_reses = (i0 ^ seq_xor(p_reses));
   // SIMD alternative for ( == 1u) ? 1u : -1u;
   p_reses = p_reses + ((p_reses ^ 1) * -1);
+//  p_reses = (p_reses * 2) - 1; best for now
+//  p_reses = (p_reses - 1) | 1;
+//
+//  if (tmp_cnt < 8)
+//  {
+//    cout << extract<0>(p_reses) << " ";
+//    p_reses = bit_andnot(0b10000000000000000000000000000001u, (p_reses << 31));
+//    cout << extract<0>(p_reses) << endl;
+//
+//    tmp_cnt++;
+//  }
+//
+//  p_reses = (p_reses << 31) ^ 0b10000000000000000000000000000001u;
 
   return p_reses;
 }

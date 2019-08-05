@@ -51,14 +51,14 @@ int main() {
     unsigned int I1, I2;
 
     for(int r = 0; r < runs; r++) {
-//      //generate the pseudo-random numbers for AGMS sketches; use EH3
-//      auto **agms_eh3 = new Xi*[buckets_no * rows_no];
-//      for (i = 0; i < buckets_no * rows_no; i++)
-//      {
-//        I1 = Random_Generate(i);
-//        I2 = Random_Generate(i);
-//        agms_eh3[i] = new Xi_EH3(I1, I2);
-//      }
+      //generate the pseudo-random numbers for AGMS sketches; use EH3
+      auto **agms_eh3 = new Xi*[buckets_no * rows_no];
+      for (i = 0; i < buckets_no * rows_no; i++)
+      {
+        I1 = Random_Generate(i);
+        I2 = Random_Generate(i);
+        agms_eh3[i] = new Xi_EH3(I1, I2);
+      }
 
       //generate the pseudo-random numbers for FAGMS sketches; use EH3 and CW2B
       auto **fagms_eh3 = new Xi*[rows_no];
@@ -73,13 +73,13 @@ int main() {
       }
 
       //build the sketches for each of the two relations
-//      Sketch *agms = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
+      Sketch *agms = new AGMS_Sketch(buckets_no, rows_no, agms_eh3);
       Sketch *fagms = new FAGMS_Sketch(buckets_no, rows_no,
                                         fagms_h3, fagms_eh3);
 
-//    timeSketchUpdate(agms, chunk_size, tuples_no, data_all, data_chunk, "AGMS");
-      timeSketchUpdate(fagms, chunk_size, tuples_no,
-                       data_all, data_chunk, "Fast-AGMS");
+    timeSketchUpdate(agms, chunk_size, tuples_no, data_all, data_chunk, "AGMS");
+//      timeSketchUpdate(fagms, chunk_size, tuples_no,
+//                       data_all, data_chunk, "Fast-AGMS");
 
 //      double time_agms = getTimedSketchUpdate(agms, chunk_size, tuples_no,
 //                                              data_all, data_chunk);
@@ -88,8 +88,8 @@ int main() {
 //      logs1[(c*runs)+r] = (tuples_no / time_fagms) * 32 / 1000000;
 
       //compute the sketch estimate
-//    double agms_est = agms->Self_Join_Size();
-      auto fagms_est = fagms->Self_Join_Size();
+    double agms_est = agms->Self_Join_Size();
+//      auto fagms_est = fagms->Self_Join_Size();
 
 //      capAccuracy(logs2, runs,
 //                  c, r, agms->Self_Join_Size() / (double)manual_join_size);
@@ -97,9 +97,9 @@ int main() {
 //                  c, r, fagms->Self_Join_Size() / (double)manual_join_size);
 
       //clean-up everything
-//      for (i = 0; i < buckets_no * rows_no; i++)
-//        delete agms_eh3[i];
-//      delete [] agms_eh3;
+      for (i = 0; i < buckets_no * rows_no; i++)
+        delete agms_eh3[i];
+      delete [] agms_eh3;
 
       for (i = 0; i < rows_no; i++)
       {
@@ -109,11 +109,11 @@ int main() {
       delete [] fagms_eh3;
       delete [] fagms_h3;
 
-//      delete agms;
+      delete agms;
       delete fagms;
 
-//  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
-      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
+  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
+//      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
     }
   }
 
