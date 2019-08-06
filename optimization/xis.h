@@ -65,7 +65,7 @@ class Xi_H3B : public  Xi
     ~Xi_H3B() override;
 
     int32<register_size> element(uint32<register_size>& keys) override;
-    int32<register_size> b_element(uint32<8>& keys) override;
+    int32<register_size> b_element(uint32<register_size>& keys) override;
 //    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
 

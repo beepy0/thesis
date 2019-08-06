@@ -46,7 +46,6 @@ inline uint32<register_size> seq_xor(uint32<register_size>& x)
   +-1 random variables
   3-wise independent schemes
 */
-int tmp_cnt = 0;
 inline int32<register_size> EH3(unsigned int i0, unsigned int I1, uint32<register_size>& keys)
 {
   const unsigned int mask = 0xAAAAAAAA;
