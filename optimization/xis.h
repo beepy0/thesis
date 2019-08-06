@@ -53,16 +53,15 @@ class Xi_EH3 : public Xi
 class Xi_H3B : public  Xi
 {
   protected:
-    unsigned int no_bits;
+//    const unsigned int no_bits;
     unsigned int *q_matrix;
     unsigned int truncation_mask;
     unsigned int floor_offset;
     unsigned int floor_value;
 
   public:
-    Xi_H3B(unsigned int seed_val, unsigned int no_bits,
-          unsigned int truncation_mask, unsigned int floor_offset,
-          unsigned int floor_value);
+    Xi_H3B(unsigned int seed_val, unsigned int truncation_mask,
+           unsigned int floor_offset, unsigned int floor_value);
     ~Xi_H3B() override;
 
     int32<register_size> element(uint32<register_size>& keys) override;

@@ -35,9 +35,7 @@ Xi_EH3::~Xi_EH3() = default;
 
 int32<register_size> Xi_EH3::element(uint32<register_size>& keys)
 {
-  unsigned int i0 = seeds[0];
-  unsigned int i1 = seeds[1];
-  return EH3(i0, i1, keys);
+  return EH3(seeds[0], seeds[1], keys);
 }
 
 int32<register_size> Xi_EH3::b_element(uint32<register_size>& keys){
@@ -58,19 +56,17 @@ int32<register_size> Xi_EH3::b_element(uint32<register_size>& keys){
 
 
 Xi_H3B::Xi_H3B(const unsigned int seed,
-             const unsigned int bits_count,
              const unsigned int mask,
              const unsigned int floor_size,
              const unsigned int floor_val)
 {
-  no_bits = bits_count;
   truncation_mask = mask;
   floor_offset = floor_size;
   floor_value = floor_val;
 
   unsigned int offset = 0;
   q_matrix = (unsigned*)malloc(sizeof(unsigned) * no_bits);
-  for( int i = 0; i < 32; i++)
+  for( int i = 0; i < (int)no_bits; i++)
   {
     q_matrix[i] = seed + offset;
       srand((unsigned int)i+1);
@@ -87,9 +83,9 @@ Xi_H3B::~Xi_H3B()
 
 int32<register_size> Xi_H3B::b_element(uint32<register_size>& keys)
 {
-  uint32<register_size> truncated_values = H3(keys, q_matrix, no_bits) & truncation_mask;
-  uint32<register_size> next_power_bits = truncated_values >> floor_offset;
-  uint32<register_size> results = (truncated_values - floor_value) * (next_power_bits & 1u)
+  SIMDPP_ALIGN(register_size*4) uint32<register_size> truncated_values = H3(keys, q_matrix) & truncation_mask;
+  SIMDPP_ALIGN(register_size*4) uint32<register_size> next_power_bits = truncated_values >> floor_offset;
+  SIMDPP_ALIGN(register_size*4) uint32<register_size> results = (truncated_values - floor_value) * (next_power_bits & 1u)
       + (truncated_values) * (next_power_bits ^ 1u);
 
   return results;

@@ -68,7 +68,7 @@ int main() {
         I1 = Random_Generate(i);
         I2 = Random_Generate(i);
         fagms_eh3[i] = new Xi_EH3(I1, I2);
-        fagms_h3[i] = new Xi_H3B(Random_Generate(i+1), 32u, truncation_mask,
+        fagms_h3[i] = new Xi_H3B(Random_Generate(i+1), truncation_mask,
                                  floor_offset, floor_value);
       }
 
@@ -77,9 +77,9 @@ int main() {
       Sketch *fagms = new FAGMS_Sketch(buckets_no, rows_no,
                                         fagms_h3, fagms_eh3);
 
-    timeSketchUpdate(agms, chunk_size, tuples_no, data_all, data_chunk, "AGMS");
-//      timeSketchUpdate(fagms, chunk_size, tuples_no,
-//                       data_all, data_chunk, "Fast-AGMS");
+//    timeSketchUpdate(agms, chunk_size, tuples_no, data_all, data_chunk, "AGMS");
+      timeSketchUpdate(fagms, chunk_size, tuples_no,
+                       data_all, data_chunk, "Fast-AGMS");
 
 //      double time_agms = getTimedSketchUpdate(agms, chunk_size, tuples_no,
 //                                              data_all, data_chunk);
@@ -88,8 +88,8 @@ int main() {
 //      logs1[(c*runs)+r] = (tuples_no / time_fagms) * 32 / 1000000;
 
       //compute the sketch estimate
-    double agms_est = agms->Self_Join_Size();
-//      auto fagms_est = fagms->Self_Join_Size();
+//    double agms_est = agms->Self_Join_Size();
+      auto fagms_est = fagms->Self_Join_Size();
 
 //      capAccuracy(logs2, runs,
 //                  c, r, agms->Self_Join_Size() / (double)manual_join_size);
@@ -112,8 +112,8 @@ int main() {
       delete agms;
       delete fagms;
 
-  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
-//      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
+//  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
+      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
     }
   }
 

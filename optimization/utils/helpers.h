@@ -62,11 +62,13 @@ void timeSketchUpdate(Sketch *sketch_type,
               data_all + (j*chunk_size) + chunk_size,
               data_chunk);
 
+
+    prefetch_read(data_chunk);
     auto start_agms = std::chrono::high_resolution_clock::now();
     for (unsigned int i = 0; i < chunk_size; i+=register_size)
     {
-      uint32<register_size> simd_reg = load(data_chunk + i);
-      sketch_type->Update_Sketch(simd_reg, 1);
+      SIMDPP_ALIGN(register_size*4) uint32<register_size> simd_reg = load(data_chunk + i);
+      sketch_type->Update_Sketch(simd_reg);
     }
     auto finish_agms = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;
@@ -106,7 +108,7 @@ double getTimedSketchUpdate(Sketch *sketch_type,
     for (unsigned int i = 0; i < chunk_size; i+=register_size)
     {
       uint32<register_size> simd_reg = load(data_chunk + i);
-      sketch_type->Update_Sketch(simd_reg, 1);
+      sketch_type->Update_Sketch(simd_reg);
     }
     auto finish_agms = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_agms = finish_agms - start_agms;

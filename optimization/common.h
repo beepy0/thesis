@@ -8,6 +8,9 @@
 #define SIMDPP_ARCH_X86_AVX2
 #include <simdpp/simd.h>
 
+const int update_freq = 1;
+const unsigned int no_bits = 32u;
+
 const std::string data_samples_files = "data/two_s/zipf_stream_data_100k_2s.csv";
 
 const int register_size = 8;

@@ -49,13 +49,14 @@ inline uint32<register_size> seq_xor(uint32<register_size>& x)
 int tmp_cnt = 0;
 inline int32<register_size> EH3(unsigned int i0, unsigned int I1, uint32<register_size>& keys)
 {
-  unsigned int mask = 0xAAAAAAAA;
+  const unsigned int mask = 0xAAAAAAAA;
 
-  uint32<register_size> p_reses = (I1&keys) ^ (keys & (keys<<1u) & mask);
+  SIMDPP_ALIGN(register_size*4) uint32<register_size> p_reses = (I1&keys) ^ (keys & (keys<<1u) & mask);
   p_reses = (i0 ^ seq_xor(p_reses));
   // SIMD alternative for ( == 1u) ? 1u : -1u;
-  p_reses = p_reses + ((p_reses ^ 1) * -1);
-//  p_reses = (p_reses * 2) - 1; best for now
+//  p_reses = p_reses + ((p_reses ^ 1) * -1);
+  // best for now
+  p_reses = (p_reses * 2) - 1;
 //  p_reses = (p_reses - 1) | 1;
 //
 //  if (tmp_cnt < 8)
@@ -80,11 +81,11 @@ inline int32<register_size> EH3(unsigned int i0, unsigned int I1, uint32<registe
   3-wise H3 scheme
 */
 inline uint32<register_size> H3(uint32<register_size> keys,
-                       const unsigned int *q_matrix,
-                       const unsigned int no_bits)
+                       const unsigned int *q_matrix)
 {
-  SIMDPP_ALIGN(register_size*4) unsigned int reses[register_size] = {0u};
-  uint32<register_size> reses_simd = load(reses);
+  const unsigned int res = 0u;
+  SIMDPP_ALIGN(register_size*4) uint32<register_size> reses_simd = load_splat(&res);
+
   for( unsigned int i = 0; i < no_bits; i++ )
   {
     reses_simd = reses_simd ^ (q_matrix[i] * ((keys >> i) & 1u));
