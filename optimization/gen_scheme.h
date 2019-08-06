@@ -54,9 +54,10 @@ inline int32<register_size> EH3(unsigned int i0, unsigned int I1, uint32<registe
   p_reses = (i0 ^ seq_xor(p_reses));
   // SIMD alternative for ( == 1u) ? 1u : -1u;
 //  p_reses = p_reses + ((p_reses ^ 1) * -1);
-  // best for now
-  p_reses = (p_reses * 2) - 1;
-//  p_reses = (p_reses - 1) | 1;
+  // best for now under AVX2
+//  p_reses = (p_reses * 2) - 1;
+  // best for now under AVX512
+  p_reses = (p_reses - 1) | 1;
 //
 //  if (tmp_cnt < 8)
 //  {
