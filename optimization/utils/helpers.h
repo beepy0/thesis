@@ -67,7 +67,8 @@ void timeSketchUpdate(Sketch *sketch_type,
     auto start_agms = std::chrono::high_resolution_clock::now();
     for (unsigned int i = 0; i < chunk_size; i+=register_size)
     {
-      SIMDPP_ALIGN(register_size*4) uint32<register_size> simd_reg = load(data_chunk + i);
+      SIMDPP_ALIGN(register_size*4) uint32<register_size> simd_reg =
+                                                           load(data_chunk + i);
       sketch_type->Update_Sketch(simd_reg);
     }
     auto finish_agms = std::chrono::high_resolution_clock::now();

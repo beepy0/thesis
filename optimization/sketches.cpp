@@ -203,21 +203,21 @@ void FAGMS_Sketch::Clear_Sketch()
 
 void FAGMS_Sketch::Update_Sketch(uint32<register_size>& keys)
 {
+  SIMDPP_ALIGN(register_size*4) int buckets_arr[register_size],
+                                    updates_arr[register_size];
+  SIMDPP_ALIGN(register_size*4) int32<register_size> buckets_simd, updates_simd;
   for (int i = 0; i < (int)rows_no; i++)
   {
-    int32<register_size> buckets_simd =
-        (i * buckets_no) + xi_bucket[i]->b_element(keys);
-    SIMDPP_ALIGN(register_size*4) int buckets_arr[register_size];
+    buckets_simd = (i * buckets_no) + xi_bucket[i]->b_element(keys);
     store(buckets_arr, buckets_simd);
 
-    int32<register_size> rows_simd = xi_pm1[i]->element(keys) * update_freq;
-    SIMDPP_ALIGN(register_size*4) int rows_arr[register_size];
-    store(rows_arr, rows_simd);
+    updates_simd = xi_pm1[i]->element(keys) * update_freq;
+    store(updates_arr, updates_simd);
 
     prefetch_write(sketch_elem);
     for (int j = 0; j < register_size; j++)
     {
-      sketch_elem[buckets_arr[j]] += rows_arr[j];
+      sketch_elem[buckets_arr[j]] += updates_arr[j];
     }
   }
 }
