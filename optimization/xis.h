@@ -1,6 +1,9 @@
 #ifndef _XIS
 #define _XIS
 
+#include "common.h"
+
+
 /*
   Generating schemes for different types of random variables
     -> +/-1 random variables
@@ -13,14 +16,15 @@
 
 
 using namespace std;
-
+using namespace simdpp;
 
 
 class Xi
 {
   public:
-    virtual unsigned int element(unsigned int j) = 0;
-    virtual double interval_sum(unsigned int alpha, unsigned int beta) = 0;
+    virtual int32<register_size> element(uint32<register_size>& keys) = 0;
+    virtual int32<register_size> b_element(uint32<register_size>& keys) = 0;
+//    virtual double interval_sum(unsigned int alpha, unsigned int beta) = 0;
 
     virtual ~Xi();
 };
@@ -39,8 +43,9 @@ class Xi_EH3 : public Xi
     Xi_EH3(unsigned int I1, unsigned int I2);
     ~Xi_EH3() override;
 
-    unsigned int element(unsigned int j) override;
-    double interval_sum(unsigned int alpha, unsigned int beta) override;
+    int32<register_size> element(uint32<register_size>& keys) override;
+    int32<register_size> b_element(uint32<register_size>& keys) override;
+//    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
 
 
@@ -48,20 +53,20 @@ class Xi_EH3 : public Xi
 class Xi_H3B : public  Xi
 {
   protected:
-    unsigned int no_bits;
+//    const unsigned int no_bits;
     unsigned int *q_matrix;
     unsigned int truncation_mask;
     unsigned int floor_offset;
     unsigned int floor_value;
 
   public:
-    Xi_H3B(unsigned int seed_val, unsigned int no_bits,
-          unsigned int truncation_mask, unsigned int floor_offset,
-          unsigned int floor_value);
+    Xi_H3B(unsigned int seed_val, unsigned int truncation_mask,
+           unsigned int floor_offset, unsigned int floor_value);
     ~Xi_H3B() override;
 
-    unsigned int element(unsigned int key) override;
-    double interval_sum(unsigned int alpha, unsigned int beta) override;
+    int32<register_size> element(uint32<register_size>& keys) override;
+    int32<register_size> b_element(uint32<register_size>& keys) override;
+//    double interval_sum(unsigned int alpha, unsigned int beta) override;
 };
 
 

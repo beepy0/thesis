@@ -3,9 +3,10 @@
 
 
 #include "xis.h"
+#include "common.h"
 
 using namespace std;
-
+using namespace simdpp;
 
 /*
 Generic interface for the sketches estimating size of joins and self-join sizes
@@ -26,7 +27,7 @@ class Sketch
     virtual void Clear_Sketch() = 0;
 
     //updating the sketch with the value corresponding to the given key
-    virtual void Update_Sketch(unsigned int key, double func) = 0;
+    virtual void Update_Sketch(uint32<register_size>& keys) = 0;
 
     //estimating the size of join of two sketches; the second sketch is passed in as s1
     virtual double Size_Of_Join(Sketch *s1) = 0;
@@ -49,7 +50,7 @@ class AGMS_Sketch : public Sketch
     unsigned int rows_no;
     unsigned int cols_no;
 
-    double *sketch_elem;
+    int *sketch_elem;
 
     Xi **xi_pm1;
 
@@ -60,7 +61,7 @@ class AGMS_Sketch : public Sketch
 
     void Clear_Sketch() override;
 
-    void Update_Sketch(unsigned int key, double func) override;
+    void Update_Sketch(uint32<register_size>& keys) override;
 
     double Size_Of_Join(Sketch *s1) override;
 
@@ -81,7 +82,7 @@ class FAGMS_Sketch : public Sketch
     unsigned int buckets_no;
     unsigned int rows_no;
 
-    double *sketch_elem;
+    int *sketch_elem;
 
     Xi **xi_bucket;
     Xi **xi_pm1;
@@ -93,7 +94,7 @@ class FAGMS_Sketch : public Sketch
 
     void Clear_Sketch() override;
 
-    void Update_Sketch(unsigned int key, double func) override;
+    void Update_Sketch(uint32<register_size>& keys) override;
 
     double Size_Of_Join(Sketch *s1) override;
 

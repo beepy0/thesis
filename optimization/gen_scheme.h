@@ -1,8 +1,16 @@
 #ifndef _SCHEME_GEN
 #define _SCHEME_GEN
 
+
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
+
+#include "common.h"
+
+
+using namespace std;
+using namespace simdpp;
 
 
 /*
@@ -21,13 +29,13 @@
 /*
   Computes parity bit of the bits of an integer
 */
-inline unsigned int seq_xor(unsigned int x)
+inline uint32<register_size> seq_xor(uint32<register_size>& x)
 {
-  x ^= (x >> 16u);
-  x ^= (x >> 8u);
-  x ^= (x >> 4u);
-  x ^= (x >> 2u);
-  x ^= (x >> 1u);
+  x = x ^ (x >> 16u);
+  x = x ^ (x >> 8u);
+  x = x ^ (x >> 4u);
+  x = x ^ (x >> 2u);
+  x = x ^ (x >> 1u);
 
   return (x & 1u);
 }
@@ -38,13 +46,23 @@ inline unsigned int seq_xor(unsigned int x)
   +-1 random variables
   3-wise independent schemes
 */
-inline unsigned int EH3(unsigned int i0, unsigned int I1, unsigned int j)
+inline int32<register_size> EH3(unsigned int i0,
+                                unsigned int I1,
+                                uint32<register_size>& keys)
 {
-  unsigned int mask = 0xAAAAAAAA;
-  unsigned int p_res = (I1&j) ^ (j & (j<<1u) & mask);
+  const unsigned int mask = 0xAAAAAAAA;
 
-  unsigned int res = (((i0 ^ seq_xor(p_res)) & 1u) == 1u) ? 1u : -1u;
-  return res;
+  SIMDPP_ALIGN(register_size*4) uint32<register_size> p_reses =
+                                         (I1&keys) ^ (keys & (keys<<1u) & mask);
+  p_reses = (i0 ^ seq_xor(p_reses));
+  // SIMD alternative for ( == 1u) ? 1u : -1u;
+//  p_reses = p_reses + ((p_reses ^ 1) * -1);
+  // best for now under AVX2
+//  p_reses = (p_reses * 2) - 1;
+  // best for now under AVX512
+  p_reses = (p_reses - 1) | 1;
+
+  return p_reses;
 }
 
 
@@ -54,17 +72,19 @@ inline unsigned int EH3(unsigned int i0, unsigned int I1, unsigned int j)
   b-valued random variables
   3-wise H3 scheme
 */
-inline unsigned int H3(unsigned int key,
-                       const unsigned int *q_matrix,
-                       const unsigned int no_bits)
+inline uint32<register_size> H3(uint32<register_size> keys,
+                       const unsigned int *q_matrix)
 {
-  unsigned int res = 0u;
+  const unsigned int res = 0u;
+  SIMDPP_ALIGN(register_size*4) uint32<register_size> reses_simd =
+                                                               load_splat(&res);
+
   for( unsigned int i = 0; i < no_bits; i++ )
   {
-    res ^= q_matrix[i] * ((key >> i) & 1u);
+    reses_simd = reses_simd ^ (q_matrix[i] * ((keys >> i) & 1u));
   }
 
-  return res;
+  return reses_simd;
 }
 
 #endif
