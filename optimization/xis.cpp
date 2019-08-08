@@ -34,10 +34,7 @@ Xi_EH3::~Xi_EH3() = default;
 
 unsigned int Xi_EH3::element(unsigned int j)
 {
-  unsigned int i0 = seeds[0];
-  unsigned int i1 = seeds[1];
-
-  unsigned int res = EH3(i0, i1, j);
+  unsigned int res = EH3(seeds[0], seeds[1], j);
   return res;
 }
 
@@ -68,6 +65,7 @@ Xi_H3B::Xi_H3B(const unsigned int seed,
   q_matrix = (unsigned*)malloc(sizeof(unsigned) * no_bits);
   for( int i = 0; i < 32; i++)
   {
+    srand((unsigned int)i+1);
     q_matrix[i] = seed + offset;
     offset += (unsigned int)rand();
   }
