@@ -10,7 +10,7 @@ using namespace simdpp;
 
 unsigned int Random_Generate(unsigned int seed)
 {
-  srand(seed);
+//  srand(seed);
   auto x = (unsigned int)rand();
   auto h = (unsigned int)rand();
 
@@ -105,6 +105,7 @@ double getTimedSketchUpdate(Sketch *sketch_type,
               data_all + (j * chunk_size) + chunk_size,
               data_chunk);
 
+    prefetch_read(data_chunk);
     auto start_agms = std::chrono::high_resolution_clock::now();
     for (unsigned int i = 0; i < chunk_size; i+=register_size)
     {
