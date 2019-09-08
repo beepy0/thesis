@@ -77,23 +77,23 @@ int main() {
       Sketch *fagms = new FAGMS_Sketch(buckets_no, rows_no,
                                         fagms_h3, fagms_eh3);
 
-//    timeSketchUpdate(agms, chunk_size, tuples_no, data_all, data_chunk, "AGMS");
+    timeSketchUpdate(agms, chunk_size, tuples_no, data_all, data_chunk, "AGMS");
 //      timeSketchUpdate(fagms, chunk_size, tuples_no,
 //                       data_all, data_chunk, "Fast-AGMS");
 
-      double time_agms = getTimedSketchUpdate(agms, chunk_size, tuples_no,
-                                              data_all, data_chunk);
-      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
+//      double time_agms = getTimedSketchUpdate(agms, chunk_size, tuples_no,
+//                                              data_all, data_chunk);
+//      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
 //      double time_fagms = getTimedSketchUpdate(fagms, chunk_size, tuples_no,
 //                                               data_all, data_chunk);
 //      logs1[(c*runs)+r] = (tuples_no / time_fagms) * 32 / 1000000;
 
       //compute the sketch estimate
-//    double agms_est = agms->Self_Join_Size();
+    double agms_est = agms->Self_Join_Size();
 //      auto fagms_est = fagms->Self_Join_Size();
 
-      capAccuracy(logs2, runs,
-                  c, r, agms->Self_Join_Size() / (double)manual_join_size);
+//      capAccuracy(logs2, runs,
+//                  c, r, agms->Self_Join_Size() / (double)manual_join_size);
 //      capAccuracy(logs2, runs,
 //                  c, r, fagms->Self_Join_Size() / (double)manual_join_size);
 
@@ -113,13 +113,13 @@ int main() {
       delete agms;
       delete fagms;
 
-//  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
+  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
 //      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
     }
   }
 
-  storeLogs(logs1, cases*runs, "agms_uniform_throughput.txt");
-  storeLogs(logs2, cases*runs, "agms_uniform_accuracy.txt");
+//  storeLogs(logs1, cases*runs, "fagms_uniform_throughput.txt");
+//  storeLogs(logs2, cases*runs, "fagms_uniform_accuracy.txt");
 
   delete[] logs1;
   delete[] logs2;
