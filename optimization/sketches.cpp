@@ -111,7 +111,6 @@ void AGMS_Sketch::Clear_Sketch()
 
 void AGMS_Sketch::Update_Sketch(uint32<register_size>& keys)
 {
-  // TODO ignore loop overhead for now
   for (int i = 0; i < int(rows_no * cols_no); i++)
   {
     int multiple_updates = reduce_add(xi_pm1[i]->element(keys) * update_freq);
