@@ -7,7 +7,7 @@
 
 unsigned int Random_Generate(unsigned int seed)
 {
-  srand(seed);
+//  srand(seed);
   auto x = (unsigned int)rand();
   auto h = (unsigned int)rand();
 
@@ -17,7 +17,7 @@ unsigned int Random_Generate(unsigned int seed)
 void loadData(unsigned int dataArray[]) {
   int i = 0;
 
-  std::ifstream fileStream ("data/zipf_stream_data_1000k.csv");
+  std::ifstream fileStream ("data/zipf_stream_data_100k.csv");
 
   if(fileStream.is_open())
   {

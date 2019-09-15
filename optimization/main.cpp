@@ -18,18 +18,17 @@
 
 using namespace std;
 
+unsigned int freq_vector[100000] = {0};
 
 int main() {
 
-  const int tuples_no = 1000000;
+  const int tuples_no = 100000;
   auto* data = new unsigned int[tuples_no];
   loadData(data);
 
   //current implementation doesn't support computing
   //the real frequency vector with 100M size
   sort(data, data + tuples_no);
-
-  unsigned int freq_vector[tuples_no] = {0};
   computeManualFrequencyVector(data, freq_vector, tuples_no);
   printFrequencies(freq_vector, tuples_no);
   long long manual_join_size =
@@ -37,12 +36,18 @@ int main() {
   cout << "Real join size computation is: " << manual_join_size << endl;
 
 
-  const int cases = 1;
+  const int cases = 6;
 
-  const unsigned int cases_arr[2*cases] = {
-                                           128u, 128u,
-                                           };
-  const int runs = 1;
+  const unsigned int cases_arr[2*cases] =
+  {
+      256u,8u,
+      256u,16u,
+      256u,32u,
+      256u,64u,
+      256u,128u,
+      256u,256u,
+  };
+  const int runs = 32;
   auto *logs1 = new float[cases*runs]{};
   auto *logs2 = new float[cases*runs]{};
 
@@ -60,8 +65,8 @@ int main() {
       auto **agms_eh3 = new Xi*[buckets_no * rows_no];
       for (i = 0; i < buckets_no * rows_no; i++)
       {
-        I1 = Random_Generate(i);
-        I2 = Random_Generate(i);
+        I1 = Random_Generate(i + c + r);
+        I2 = Random_Generate(i + c + r);
         agms_eh3[i] = new Xi_EH3(I1, I2);
       }
 
@@ -70,11 +75,11 @@ int main() {
       auto **fagms_h3 = new Xi*[rows_no];
       for (i = 0; i < rows_no; i++)
       {
-        I1 = Random_Generate(i);
-        I2 = Random_Generate(i);
+        I1 = Random_Generate(i + c + r);
+        I2 = Random_Generate(i + c + r);
         fagms_eh3[i] = new Xi_EH3(I1, I2);
-        fagms_h3[i] = new Xi_H3B(Random_Generate(i+1), 32u, truncation_mask,
-                                 floor_offset, floor_value);
+        fagms_h3[i] = new Xi_H3B(Random_Generate(i + c + r +1), 32u,
+                                 truncation_mask, floor_offset, floor_value);
       }
 
       //build the sketches for each of the two relations
@@ -82,20 +87,20 @@ int main() {
       Sketch *fagms1 = new FAGMS_Sketch(buckets_no, rows_no,
                                         fagms_h3, fagms_eh3);
 
-    timeSketchUpdate(agms1, data, tuples_no, "AGMS");
+//    timeSketchUpdate(agms1, data, tuples_no, "AGMS");
 //  timeSketchUpdate(fagms1, data, tuples_no, "Fast-AGMS");
 
-//      double time_agms = getTimedSketchUpdate(agms1, data, tuples_no);
-//      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
+      double time_agms = getTimedSketchUpdate(agms1, data, tuples_no);
+      logs1[(c*runs)+r] = (tuples_no / time_agms) * 32 / 1000000;
 //      double time_fagms = getTimedSketchUpdate(fagms1, data, tuples_no);
 //      logs1[(c*runs)+r] = (tuples_no / time_fagms) * 32 / 1000000;
 
       //compute the sketch estimate
-    double agms_est = agms1->Self_Join_Size();
+//    double agms_est = agms1->Self_Join_Size();
 //      auto fagms_est = fagms1->Self_Join_Size();
 
-//      capAccuracy(logs2, runs,
-//                  c, r, agms1->Self_Join_Size() / (double)manual_join_size);
+      capAccuracy(logs2, runs,
+                  c, r, agms1->Self_Join_Size() / (double)manual_join_size);
 //      capAccuracy(logs2, runs,
 //                  c, r, fagms1->Self_Join_Size() / (double)manual_join_size);
 
@@ -115,13 +120,13 @@ int main() {
       delete agms1;
       delete fagms1;
 
-  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
+//  printf("\n AGMS Estimate is: %20.2f \n\n", agms_est);
 //      printf("\n Fast-AGMS Estimate is: %20.2f \n\n", fagms_est);
     }
   }
 
-//  storeLogs(logs1, cases*runs, "agms_uniform_throughput.txt");
-//  storeLogs(logs2, cases*runs, "agms_uniform_accuracy.txt");
+  storeLogs(logs1, cases*runs, "agms_zipf_4_thrp.txt");
+  storeLogs(logs2, cases*runs, "agms_zipf_4_acc.txt");
 
   delete[] logs1;
   delete[] logs2;

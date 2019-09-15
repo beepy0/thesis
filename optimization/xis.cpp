@@ -65,7 +65,7 @@ Xi_H3B::Xi_H3B(const unsigned int seed,
   q_matrix = (unsigned*)malloc(sizeof(unsigned) * no_bits);
   for( int i = 0; i < 32; i++)
   {
-    srand((unsigned int)i+1);
+//    srand((unsigned int)i+1);
     q_matrix[i] = seed + offset;
     offset += (unsigned int)rand();
   }
