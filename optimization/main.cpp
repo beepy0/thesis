@@ -118,8 +118,8 @@ int main() {
     }
   }
 
-  storeLogs(logs1, cases*runs, "fagms_zipf_thrp_5.txt");
-  storeLogs(logs2, cases*runs, "fagms_zipf_acc_5.txt");
+  storeLogs(logs1, cases*runs, "fagms_uniform_thrp_extra_2_100k.txt");
+  storeLogs(logs2, cases*runs, "fagms_uniform_acc_extra_2_100k.txt");
 
   delete[] logs1;
   delete[] logs2;
