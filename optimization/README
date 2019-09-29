@@ -1,4 +1,4 @@
-Original README from source: Sketches for Size of Join Estimation. Not to be confused with this thesis's current implementation.
+**Original README from source: Sketches for Size of Join Estimation. Not to be confused with this thesis's current implementation.**
 ------------------------------------
 This package contains the implementation in C++ of the sketching algorithms for size of join estimation. The content of the package can be divided into the following main categories:
 
