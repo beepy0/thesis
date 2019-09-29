@@ -2,7 +2,7 @@ CPP = g++ -O2 -Wno-deprecated
 CPPDEBUG = g++ -O2 -Wno-deprecated -g
 
 
-xis.o : xis.h xis.cpp gen_scheme.h range_sum.h
+xis.o : xis.h xis.cpp gen_scheme.h
 	$(CPP) -c xis.cpp
 
 sketches.o : sketches.h sketches.cpp

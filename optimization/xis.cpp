@@ -1,6 +1,5 @@
 #include "gen_scheme.h"
 #include "xis.h"
-#include "range_sum.h"
 #include <iostream>
 
 
